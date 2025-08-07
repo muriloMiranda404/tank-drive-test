@@ -6,7 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.Controles;
-import frc.robot.command.DriveCommand;
+import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.TankSubsystem;
 
 // import frc.robot.Constants.OperatorConstants;
@@ -16,11 +16,11 @@ public class RobotContainer {
   TankSubsystem tankSubsystem = new TankSubsystem();
 
   public RobotContainer() {
-    tankSubsystem.setDefaultCommand(new DriveCommand(
-      tankSubsystem, 
-      () -> controller.getLeftY(), 
-      () -> controller.getRightX()
-      ));
+    // tankSubsystem.setDefaultCommand(new DriveCommand(
+    //   tankSubsystem, 
+    //     () -> controller.getLeftY(), 
+    //     () -> controller.getRightX()
+    //   ));
 
     configureBindings();
   }
