@@ -15,6 +15,7 @@ public final class Constants {
   }
 
   public static final class Shooter {
+    public static final double MAX_SPEED = 0.8;  
     public static final int SHOOTER_UP_MOTOR_ID = 8;  
     public static final int SHOOTER_DOWN_MOTOR_ID = 6;     
   }
@@ -26,6 +27,7 @@ public final class Constants {
   }
 
   public static final class Intake {
+    public static final double MAX_SPEED = -0.7;
     public static final int INTAKE_MOTOR_ID = 9;
     public static final int PNEUMATIC_HUB_ID = 1;
     public static final int DOUBLE_SOLENOID_FORWARD_CHANNEL = 0;
@@ -33,6 +35,7 @@ public final class Constants {
   }
 
   public static final class Conveyor {
+    public static final double MAX_SPEED = 7;
     public static final int CONVEYOR_MOTOR_ID = 7;
     public static final int OPTICAL_SENSOR_ID = 1;
   }  

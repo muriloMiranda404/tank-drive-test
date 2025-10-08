@@ -1,9 +1,10 @@
 package frc.robot.commands.Intake;
 
+import frc.robot.Constants.Intake;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.joysticks.SubsystemController;
 import frc.robot.subsystems.ConveyorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.joysticks.SubsystemController;
 
 
 public class IntakeMotorCatchBall extends Command{
@@ -22,7 +23,7 @@ public class IntakeMotorCatchBall extends Command{
 
     @Override
     public void execute() {
-        this.intakeSubsystem.setSpeed(-0.7);
+        this.intakeSubsystem.setSpeed(Intake.MAX_SPEED);
     }
 
     @Override

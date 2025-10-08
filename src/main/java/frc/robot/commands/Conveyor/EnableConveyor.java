@@ -1,5 +1,6 @@
 package frc.robot.commands.Conveyor;
 
+import frc.robot.Constants.Conveyor;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.joysticks.SubsystemController;
@@ -20,7 +21,7 @@ public class EnableConveyor extends Command {
 
     @Override
     public void execute() {
-        this.conveyorSubsystem.setSpeed(-1.0);
+        this.conveyorSubsystem.setSpeed(Conveyor.MAX_SPEED);
     }
 
     @Override

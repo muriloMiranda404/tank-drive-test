@@ -65,6 +65,5 @@ public class RackSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Posicao do encoder", this.getPosition());
     }
 }

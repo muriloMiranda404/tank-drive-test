@@ -1,8 +1,9 @@
 package frc.robot.commands.Shooter;
 
+import frc.robot.Constants.Shooter;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.joysticks.SubsystemController;
-import edu.wpi.first.wpilibj2.command.Command;
 
 public class EnableShooter extends Command {
     private ShooterSubsystem shooterSubsystem;
@@ -17,7 +18,7 @@ public class EnableShooter extends Command {
 
     @Override
     public void execute() {
-        this.shooterSubsystem.setSpeed(-0.8, 0.8);
+        this.shooterSubsystem.setSpeed(-Shooter.MAX_SPEED, Shooter.MAX_SPEED);
     }
 
     @Override
