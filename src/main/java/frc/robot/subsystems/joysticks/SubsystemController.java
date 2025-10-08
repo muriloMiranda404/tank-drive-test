@@ -1,9 +1,10 @@
 package frc.robot.subsystems.joysticks;
 
-import frc.robot.Constants.Controles;
+import frc.robot.Constants.Controllers;
 
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.joysticks.IO.SubsystemControllerIO;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class SubsystemController implements SubsystemControllerIO{
     private static SubsystemController m_instance;
@@ -16,7 +17,7 @@ public class SubsystemController implements SubsystemControllerIO{
     private CommandXboxController controller;
 
     private SubsystemController() {
-        controller = new CommandXboxController(Controles.SUBSYSTEMS_CONTROLLER);
+        controller = new CommandXboxController(Controllers.SUBSYSTEMS_CONTROLLER);
     }
 
     public static SubsystemController getInstance() {
@@ -47,7 +48,7 @@ public class SubsystemController implements SubsystemControllerIO{
     }
     
     @Override
-    public double getCremalheiraSpeed() {
+    public double getRackSpeed() {
         return controller.getRightY() * -0.1;
     }
 

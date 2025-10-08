@@ -1,50 +1,48 @@
 package frc.robot;
 
-import frc.robot.Constants.Controles;
-
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
 import frc.robot.commands.Shooter.EnableShooter;
 import frc.robot.commands.Conveyor.EnableConveyor;
 import frc.robot.commands.Intake.IntakeMotorCatchBall;
 
-import frc.robot.subsystems.TankSubsystem;
+import frc.robot.subsystems.RackSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ConveyorSubsystem;
-import frc.robot.subsystems.CremalheiraSubsystem;
+import frc.robot.subsystems.DriveBaseSubsystem;
 import frc.robot.subsystems.vision.RaspberrySubsystem;
+import frc.robot.subsystems.joysticks.DriverController;
 import frc.robot.subsystems.joysticks.SubsystemController;
 
 public class RobotContainer {
   // Controles
+  DriverController driverController = DriverController.getInstance();
   SubsystemController subsystemController = SubsystemController.getInstance();
-  XboxController driverController = new XboxController(Controles.OPERATOR_CONTROLLER);
 
   // Subsistemas
-  TankSubsystem tankSubsystem = TankSubsystem.getInstance();
   IntakeSubsystem intakeSubsystem = IntakeSubsystem.getInstance();
+  DriveBaseSubsystem driveBaseSubsystem = DriveBaseSubsystem.getInstance();
   ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
   ConveyorSubsystem conveyorSubsystem = ConveyorSubsystem.getInstance();
-  CremalheiraSubsystem cremalheiraSubsystem = CremalheiraSubsystem.getInstance();
+  RackSubsystem rackSubsystem = RackSubsystem.getInstance();
   RaspberrySubsystem raspberrySubsystem = RaspberrySubsystem.getInstance("raspberry");
 
   public RobotContainer() {
-    cremalheiraSubsystem.resetEncoder();
+    rackSubsystem.resetEncoder();
 
-    tankSubsystem.setDefaultCommand(
-      tankSubsystem.driveTank(
+    driveBaseSubsystem.setDefaultCommand(
+      driveBaseSubsystem.driveTank(
           driverController,
-          () -> MathUtil.applyDeadband(driverController.getLeftY(), 0),
-          () -> MathUtil.applyDeadband(driverController.getRightX(), 0)
+          () -> MathUtil.applyDeadband(driverController.getTranslationAxis(), 0),
+          () -> MathUtil.applyDeadband(driverController.getRotationAxis(), 0)
 
         )
     );
     
-    cremalheiraSubsystem.setDefaultCommand(
-      cremalheiraSubsystem.setAngulation(subsystemController)
+    rackSubsystem.setDefaultCommand(
+      rackSubsystem.setAngulation(subsystemController)
     );
 
     configureIntakeBindings();

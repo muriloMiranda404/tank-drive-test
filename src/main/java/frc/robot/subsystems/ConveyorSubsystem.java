@@ -14,7 +14,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     private DigitalInput sensor;
 
     private ConveyorSubsystem() {
-        this.sensor = new DigitalInput(Conveyor.SENSOR_ID);
+        this.sensor = new DigitalInput(Conveyor.OPTICAL_SENSOR_ID);
         this.conveyor = new SparkMax(Conveyor.CONVEYOR_MOTOR_ID, MotorType.kBrushed);
     }
 

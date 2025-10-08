@@ -7,27 +7,28 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.Cremalheira;
+import frc.robot.Constants.Rack;
 import frc.robot.subsystems.joysticks.SubsystemController;
 
-public class CremalheiraSubsystem extends SubsystemBase {
-    private static CremalheiraSubsystem m_instance;
-    private SparkMax cremalheira;
+public class RackSubsystem extends SubsystemBase {
+    private static RackSubsystem m_instance;
+    
+    private SparkMax rackMotor;
 
-    private CremalheiraSubsystem() {
-        this.cremalheira = new SparkMax(Cremalheira.CREMALHEIRA_MOTOR_ID, MotorType.kBrushless);
+    private RackSubsystem() {
+        this.rackMotor = new SparkMax(Rack.RACK_MOTOR_ID, MotorType.kBrushless);
     }
 
-    public static CremalheiraSubsystem getInstance() {
+    public static RackSubsystem getInstance() {
         if (m_instance == null) {
-            m_instance = new CremalheiraSubsystem();
+            m_instance = new RackSubsystem();
         }
 
         return m_instance;
     } 
 
     public RelativeEncoder getEncoder() {
-        return this.cremalheira.getEncoder();
+        return this.rackMotor.getEncoder();
     }
     
     public double getSpeed() {
@@ -39,7 +40,7 @@ public class CremalheiraSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double speed) {
-        this.cremalheira.set(speed);
+        this.rackMotor.set(speed);
     }
 
     public void resetEncoder() {
@@ -49,14 +50,16 @@ public class CremalheiraSubsystem extends SubsystemBase {
     public Command setAngulation(SubsystemController controller) {
         return run(() -> {
             double position = this.getPosition();
-            double speed = controller.getCremalheiraSpeed();
+            double speed = controller.getRackSpeed();
+            SmartDashboard.putNumber("po", speed);
 
-            if (position >= Cremalheira.MAXIMO_CIMA && speed > 0.0) {
+            if (position >= Rack.MAX_UP && speed > 0.0) {
                 speed = 0;
-            } else if (position <= Cremalheira.MAXIMO_BAIXO && speed < 0.0) {
+            } else if (position <= Rack.MAX_DOWN && speed < 0.0) {
                 speed = 0;
             }
-            this.cremalheira.set(speed);
+
+            this.rackMotor.set(speed);
         });
     }
 

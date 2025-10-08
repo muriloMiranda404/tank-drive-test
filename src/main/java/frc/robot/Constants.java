@@ -2,12 +2,12 @@ package frc.robot;
 
 public final class Constants {
 
-  public static final class Controles {
-    public static final int OPERATOR_CONTROLLER = 0;
+  public static final class Controllers {
+    public static final int DRIVER_CONTROLLER = 0;
     public static final int SUBSYSTEMS_CONTROLLER = 1;
   }
 
-  public static final class Tracao {
+  public static final class DriveBase {
     public static final int LEFT_MOTOR_LEADER_ID = 2;
     public static final int LEFT_MOTOR_FOLLOW_ID = 4;
     public static final int RIGHT_MOTOR_LEADER_ID = 1; 
@@ -19,10 +19,10 @@ public final class Constants {
     public static final int SHOOTER_DOWN_MOTOR_ID = 6;     
   }
 
-  public static final class Cremalheira {
-    public static final double MAXIMO_CIMA = 118.0;
-    public static final double MAXIMO_BAIXO = 1.0;
-    public static final int CREMALHEIRA_MOTOR_ID = 5;
+  public static final class Rack {
+    public static final double MAX_UP = 118.0;
+    public static final double MAX_DOWN = 1.0;
+    public static final int RACK_MOTOR_ID = 5;
   }
 
   public static final class Intake {
@@ -34,7 +34,7 @@ public final class Constants {
 
   public static final class Conveyor {
     public static final int CONVEYOR_MOTOR_ID = 7;
-    public static final int SENSOR_ID= 1;
+    public static final int OPTICAL_SENSOR_ID = 1;
   }  
 
 }
