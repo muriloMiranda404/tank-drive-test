@@ -4,8 +4,6 @@ import frc.robot.Constants.Tracao;
 
 import java.util.function.DoubleSupplier;
 
-import javax.xml.stream.XMLOutputFactory;
-
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkBase.PersistMode;
 
@@ -21,6 +19,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class TankSubsystem extends SubsystemBase {
+  private static TankSubsystem m_instance;
+
   private SparkMax rightLeader;
   private SparkMax rightFollow;
   private SparkMax leftLeader;
@@ -34,7 +34,7 @@ public class TankSubsystem extends SubsystemBase {
   private SparkMaxConfig leftLeaderConfig;
   private SparkMaxConfig leftFollowConfig;
   
-  public TankSubsystem() {
+  private TankSubsystem() {
     this.leftLeader = new SparkMax(Tracao.LEFT_MOTOR_LEADER_ID, SparkMax.MotorType.kBrushed);
     this.leftFollow = new SparkMax(Tracao.LEFT_MOTOR_FOLLOW_ID, SparkMax.MotorType.kBrushed);
 
@@ -76,6 +76,13 @@ public class TankSubsystem extends SubsystemBase {
     this.rightFollow.configure(rightFollowConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
+  public static TankSubsystem getInstance() {
+    if (m_instance == null) {
+      m_instance = new TankSubsystem();
+    }
+    return m_instance;
+  }
+
   private double[] adjustVelocity(XboxController joystick, double speed, double rotation) {
     // Marcha
     if (joystick.getLeftBumperButton()) {
@@ -87,7 +94,7 @@ public class TankSubsystem extends SubsystemBase {
     } else {
       speed *= 0.7;
     }
-
+    
     // Aliança
     var alliance = DriverStation.getAlliance();
 

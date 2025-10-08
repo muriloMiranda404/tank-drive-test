@@ -2,20 +2,41 @@ package frc.robot.subsystems.vision;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class RaspberrySubsystem extends SubsystemBase {
-    NetworkTable visionTable;
-    NetworkTable configTable;
-    NetworkTable raspberryTable;
-    NetworkTable detectionsTable;
+    private static RaspberrySubsystem m_instance;
 
-    public RaspberrySubsystem(String raspberryTablePath) {
+    // Shuflleboard config
+    private ShuffleboardTab shuffleboardTab;
+    private ShuffleboardLayout targetInformationLayout;
+
+    // NetworkTables config
+    private NetworkTable visionTable;
+    private NetworkTable configTable;
+    private NetworkTable raspberryTable;
+    private NetworkTable detectionsTable;
+
+    private RaspberrySubsystem(String raspberryTablePath) {
+        this.shuffleboardTab = Shuffleboard.getTab(raspberryTablePath);
+        this.targetInformationLayout = 
+            this.shuffleboardTab.getLayout("Target Info", BuiltInLayouts.kGrid);
+
         this.raspberryTable = NetworkTableInstance.getDefault().getTable(raspberryTablePath);
-        
-        this.visionTable = raspberryTable.getSubTable("vision");
-        this.configTable = raspberryTable.getSubTable("config");
         this.detectionsTable = raspberryTable.getSubTable("detections");
+        this.visionTable = detectionsTable.getSubTable("vision");
+        this.configTable = detectionsTable.getSubTable("config");
+    }
+
+    public static RaspberrySubsystem getInstance(String raspberryTablePath) {
+        if (m_instance == null) {
+            m_instance = new RaspberrySubsystem(raspberryTablePath);
+        }
+        return m_instance;
     }
 
     // VISION

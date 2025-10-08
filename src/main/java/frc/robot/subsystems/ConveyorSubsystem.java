@@ -7,15 +7,24 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase; 
 
-
 public class ConveyorSubsystem extends SubsystemBase {
+    private static ConveyorSubsystem m_instance;
+
     private SparkMax conveyor;
     private DigitalInput sensor;
 
-    public ConveyorSubsystem() {
+    private ConveyorSubsystem() {
         this.sensor = new DigitalInput(Conveyor.SENSOR_ID);
         this.conveyor = new SparkMax(Conveyor.CONVEYOR_MOTOR_ID, MotorType.kBrushed);
     }
+
+    public static ConveyorSubsystem getInstance() {
+        if (m_instance == null) {
+            m_instance = new ConveyorSubsystem();
+        }
+
+        return m_instance;
+    } 
 
     public void setSpeed(double speed) {
         this.conveyor.set(speed);

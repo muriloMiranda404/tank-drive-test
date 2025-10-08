@@ -8,13 +8,23 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase {
+    private static ShooterSubsystem m_instance;
+
     private SparkMax shooterDown;
     private SparkMax shooterUp;
 
-    public ShooterSubsystem() {
+    private ShooterSubsystem() {
         this.shooterDown = new SparkMax(Shooter.SHOOTER_DOWN_MOTOR_ID, MotorType.kBrushless);
         this.shooterUp = new SparkMax(Shooter.SHOOTER_UP_MOTOR_ID, MotorType.kBrushless);
     }
+
+    public static ShooterSubsystem getInstance() {
+        if (m_instance == null) {
+            m_instance = new ShooterSubsystem();
+        }
+
+        return m_instance;
+    } 
 
     public void setSpeed(double down, double up) {
         this.shooterDown.set(down);

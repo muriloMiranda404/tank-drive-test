@@ -1,18 +1,18 @@
 package frc.robot.commands.Conveyor;
 
-import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ConveyorSubsystem;
-import frc.robot.subsystems.utils.SubsystemController;
+import frc.robot.subsystems.joysticks.SubsystemController;
 
 public class EnableConveyor extends Command {
-    private ConveyorSubsystem subsystem;
-    private SubsystemController controller = new SubsystemController();
     private boolean stop;
+    private SubsystemController controller;
+    private ConveyorSubsystem conveyorSubsystem;
 
-    public EnableConveyor(RobotContainer container, boolean stop) {
+    public EnableConveyor(boolean stop) {
+        this.controller = SubsystemController.getInstance();
         this.stop = stop;
-        this.subsystem = container.getConveyorSubsystemInstance();
+        this.conveyorSubsystem = ConveyorSubsystem.getInstance();
     }
 
     @Override
@@ -20,16 +20,19 @@ public class EnableConveyor extends Command {
 
     @Override
     public void execute() {
-        subsystem.setSpeed(-1.0);
+        this.conveyorSubsystem.setSpeed(-1.0);
     }
 
     @Override
     public boolean isFinished() {
-        return false || (stop == true && subsystem.ballInConveyor());
+        return 
+        !controller.getConveyorButton().getAsBoolean() &&
+        !controller.getIntakeAndConveyorButton().getAsBoolean()|| 
+        (stop == true && conveyorSubsystem.ballInConveyor());
     }
 
     @Override
     public void end(boolean interrupted) {
-        subsystem.stopMotor();
+        conveyorSubsystem.stopMotor();
     }
 }

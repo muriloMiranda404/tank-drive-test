@@ -1,16 +1,15 @@
 package frc.robot.commands.Shooter;
 
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.joysticks.SubsystemController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.utils.SubsystemController;
 
 public class EnableShooter extends Command {
-    private ShooterSubsystem subsystem;
-    private SubsystemController controller = new SubsystemController();
+    private ShooterSubsystem shooterSubsystem;
+    private SubsystemController controller = SubsystemController.getInstance();
 
-    public EnableShooter(RobotContainer container) {
-        this.subsystem = container.getShooterSubsystemInstance();
+    public EnableShooter() {
+        this.shooterSubsystem = ShooterSubsystem.getInstance();
     }
 
     @Override
@@ -18,19 +17,16 @@ public class EnableShooter extends Command {
 
     @Override
     public void execute() {
-        subsystem.setSpeed(-0.8, 0.8);
+        this.shooterSubsystem.setSpeed(-0.8, 0.8);
     }
 
     @Override
     public boolean isFinished() {
-        if (!controller.getLeftBumperButton()) {
-            return true;
-        }
-        return false;
+        return !controller.getShooterButton().getAsBoolean();
     }
 
     @Override
     public void end(boolean interrupted) {
-        subsystem.stopMotors();
+        this.shooterSubsystem.stopMotors();
     }
 }
