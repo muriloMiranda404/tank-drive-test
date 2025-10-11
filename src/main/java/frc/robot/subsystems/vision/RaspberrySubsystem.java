@@ -39,9 +39,9 @@ public class RaspberrySubsystem extends SubsystemBase {
         ShuffleboardLayout targetInformationsLayout =
           this.shuffleboardTab.getLayout("Target Informations", BuiltInLayouts.kList);
         
-        targetInformationsLayout.
-        withPosition(0, 0)
-        .withSize(2, 2);
+        targetInformationsLayout
+          .withPosition(0, 0)
+          .withSize(3, 2);
         
         GenericEntry tx = 
           targetInformationsLayout

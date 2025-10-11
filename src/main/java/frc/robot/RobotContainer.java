@@ -1,20 +1,14 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
-import frc.robot.commands.Shooter.EnableShooter;
-import frc.robot.commands.Conveyor.EnableConveyor;
-import frc.robot.commands.Intake.IntakeMotorCatchBall;
+import frc.FRC9485.joysticks.DriverController;
+import frc.FRC9485.joysticks.SubsystemController;
 
-import frc.robot.subsystems.RackSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.ConveyorSubsystem;
-import frc.robot.subsystems.DriveBaseSubsystem;
 import frc.robot.subsystems.vision.RaspberrySubsystem;
-import frc.robot.subsystems.joysticks.DriverController;
-import frc.robot.subsystems.joysticks.SubsystemController;
+import frc.robot.subsystems.DriveBaseSubsystem;
+import frc.robot.subsystems.superStructure.RackSubsystem;
+
 
 public class RobotContainer {
   // Controles
@@ -22,15 +16,13 @@ public class RobotContainer {
   SubsystemController subsystemController = SubsystemController.getInstance();
 
   // Subsistemas
-  IntakeSubsystem intakeSubsystem = IntakeSubsystem.getInstance();
   DriveBaseSubsystem driveBaseSubsystem = DriveBaseSubsystem.getInstance();
-  ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
-  ConveyorSubsystem conveyorSubsystem = ConveyorSubsystem.getInstance();
-  RackSubsystem rackSubsystem = RackSubsystem.getInstance();
   RaspberrySubsystem raspberrySubsystem = RaspberrySubsystem.getInstance("raspberry");
 
+  RackSubsystem rackSubsystem;
+
   public RobotContainer() {
-    rackSubsystem.resetEncoder();
+    rackSubsystem = RackSubsystem.getInstance();
 
     driveBaseSubsystem.setDefaultCommand(
       driveBaseSubsystem.driveTank(
@@ -41,25 +33,25 @@ public class RobotContainer {
         )
     );
     
-    rackSubsystem.setDefaultCommand(
-      rackSubsystem.setAngulation(subsystemController)
-    );
+    // rackSubsystem.setDefaultCommand(
+    //   rackSubsystem.setAngulation(subsystemController)
+    // );
 
-    configureIntakeBindings();
-    configureShooterBindings();
-    configureConveyorBindings();
+    // configureIntakeBindings();
+    // configureShooterBindings();
+    // configureConveyorBindings();
   }
 
-  public void configureShooterBindings() {
-    subsystemController.getShooterButton().whileTrue(new EnableShooter());
-  }
+  // public void configureShooterBindings() {
+  //   subsystemController.getShooterButton().whileTrue(new EnableShooter());
+  // }
 
-  public void configureConveyorBindings() {
-    subsystemController.getConveyorButton().whileTrue(new EnableConveyor(false));
-  }
+  // public void configureConveyorBindings() {
+  //   subsystemController.getConveyorButton().whileTrue(new EnableConveyor(false));
+  // }
 
-  public void configureIntakeBindings() {
-    subsystemController.getIntakeButton().whileTrue(new IntakeMotorCatchBall());
-    subsystemController.getIntakeAndConveyorButton().whileTrue(new ParallelCommandGroup(new EnableConveyor(true), new IntakeMotorCatchBall()));
-  }
+  // public void configureIntakeBindings() {
+  //   subsystemController.getIntakeButton().whileTrue(new IntakeMotorCatchBall());
+  //   subsystemController.getIntakeAndConveyorButton().whileTrue(new ParallelCommandGroup(new EnableConveyor(true), new IntakeMotorCatchBall()));
+  // }
 }

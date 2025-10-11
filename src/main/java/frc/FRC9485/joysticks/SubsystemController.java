@@ -1,9 +1,9 @@
-package frc.robot.subsystems.joysticks;
+package frc.FRC9485.joysticks;
 
 import frc.robot.Constants.Controllers;
 
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.joysticks.IO.SubsystemControllerIO;
+import frc.FRC9485.joysticks.IO.SubsystemControllerIO;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class SubsystemController implements SubsystemControllerIO{

@@ -1,8 +1,8 @@
-package frc.robot.subsystems.joysticks;
+package frc.FRC9485.joysticks;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.Controllers;
-import frc.robot.subsystems.joysticks.IO.DriverControllerIO;
+import frc.FRC9485.joysticks.IO.DriverControllerIO;
 
 public class DriverController implements DriverControllerIO{
     private static DriverController m_instance;

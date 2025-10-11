@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.superStructure;
 
 import frc.robot.Constants.Intake;
 
@@ -11,18 +11,10 @@ public class IntakeSubsystem extends SubsystemBase {
     private static IntakeSubsystem m_instance;
 
     private SparkMax intakeMotor;
-    // private PneumaticHub pneumaticHub;
-    // private DoubleSolenoid doubleSolenoid;
+
 
     private IntakeSubsystem() {
-        // this.pneumaticHub = new PneumaticHub(Intake.PNEUMATIC_HUB_ID);
         this.intakeMotor = new SparkMax(Intake.INTAKE_MOTOR_ID, MotorType.kBrushless);
-        
-        // this.doubleSolenoid = new DoubleSolenoid(
-        //     PneumaticsModuleType.REVPH,
-        //     Intake.DOUBLE_SOLENOID_FORWARD_CHANNEL, 
-        //     Intake.DOUBLE_SOLENOID_REVERSE_CHANNEL
-        // );
     }
 
     public static IntakeSubsystem getInstance() {
@@ -40,12 +32,4 @@ public class IntakeSubsystem extends SubsystemBase {
     public void stopMotor() {
         this.intakeMotor.set(0);
     }
-
-    @Override
-    public void periodic() {
-        // pneumaticHub.clearStickyFaults();
-        // System.out.println("pressao: " + ptneumaticHub.getPressure(0));
-        // pneumaticHub.enableCompressorAnalog(30, 50);
-    }
-    
 }

@@ -1,30 +1,35 @@
 package frc.robot.subsystems;
 
+import frc.FRC9485.joysticks.DriverController;
+import frc.FRC9485.motors.SparkMaxMotors;
 import frc.robot.Constants.DriveBase;
-import frc.robot.subsystems.joysticks.DriverController;
 
 import java.util.function.DoubleSupplier;
 
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkBase.PersistMode;
-
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
 
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveBaseSubsystem extends SubsystemBase {
   private static DriveBaseSubsystem m_instance;
 
-  private SparkMax rightLeader;
-  private SparkMax rightFollow;
-  private SparkMax leftLeader;
-  private SparkMax leftFollow;
+  private ShuffleboardTab tab;
+
+  private SparkMaxMotors rightLeader;
+  private SparkMaxMotors rightFollow;
+  private SparkMaxMotors leftLeader;
+  private SparkMaxMotors leftFollow;
 
   private DifferentialDrive driver;
 
@@ -35,11 +40,11 @@ public class DriveBaseSubsystem extends SubsystemBase {
   private SparkMaxConfig leftFollowConfig;
   
   private DriveBaseSubsystem() {
-    this.leftLeader = new SparkMax(DriveBase.LEFT_MOTOR_LEADER_ID, SparkMax.MotorType.kBrushed);
-    this.leftFollow = new SparkMax(DriveBase.LEFT_MOTOR_FOLLOW_ID, SparkMax.MotorType.kBrushed);
+    this.leftLeader = new SparkMaxMotors(DriveBase.LEFT_MOTOR_LEADER_ID, SparkMax.MotorType.kBrushed, false, "left-leader");
+    this.leftFollow = new SparkMaxMotors(DriveBase.LEFT_MOTOR_FOLLOW_ID, SparkMax.MotorType.kBrushed, false, "left-follow");
 
-    this.rightLeader  = new SparkMax(DriveBase.RIGHT_MOTOR_LEADER_ID, SparkMax.MotorType.kBrushed);
-    this.rightFollow = new SparkMax(DriveBase.RIGHT_MOTOR_FOLLOW_ID, SparkMax.MotorType.kBrushed);
+    this.rightLeader  = new SparkMaxMotors(DriveBase.RIGHT_MOTOR_LEADER_ID, SparkMax.MotorType.kBrushed, false, "right-leader");
+    this.rightFollow = new SparkMaxMotors(DriveBase.RIGHT_MOTOR_FOLLOW_ID, SparkMax.MotorType.kBrushed, false, "right-follow");
 
     this.global = new SparkMaxConfig();
     this.rightLeaderConfig = new SparkMaxConfig();
@@ -58,7 +63,7 @@ public class DriveBaseSubsystem extends SubsystemBase {
 
     this.rightFollowConfig
     .inverted(false)
-    .follow(rightLeader)
+    .follow(rightLeader.getSpark())
     .apply(global);
 
     this.leftLeaderConfig
@@ -67,32 +72,20 @@ public class DriveBaseSubsystem extends SubsystemBase {
 
     this.leftFollowConfig
     .inverted(true)
-    .follow(leftLeader)
+    .follow(leftLeader.getSpark())
     .apply(global);
 
-    this.leftLeader.configure(
-      leftLeaderConfig,
-      ResetMode.kNoResetSafeParameters,
-      PersistMode.kNoPersistParameters
-    );
+    this.leftLeader.updateConfig(leftLeaderConfig);
+    this.rightLeader.updateConfig(rightLeaderConfig);
+    
+    this.leftFollow.updateConfig(leftFollowConfig);
+    this.rightFollow.updateConfig(rightFollowConfig);
 
-    this.rightLeader.configure(
-      rightLeaderConfig,
-      ResetMode.kNoResetSafeParameters,
-      PersistMode.kNoPersistParameters
-    );
+    tab = Shuffleboard.getTab("Tank");
+    SendableRegistry.addChild(driver, leftLeader);
+    SendableRegistry.addChild(driver, rightLeader);
 
-    this.leftFollow.configure(
-      leftFollowConfig,
-      ResetMode.kNoResetSafeParameters,
-      PersistMode.kNoPersistParameters
-    );
-
-    this.rightFollow.configure(
-      rightFollowConfig,
-      ResetMode.kNoResetSafeParameters,
-      PersistMode.kNoPersistParameters
-    );
+    tab.add("Tank", driver);
   }
 
   public static DriveBaseSubsystem getInstance() {

@@ -1,10 +1,10 @@
 package frc.robot.commands.Intake;
 
+import frc.FRC9485.joysticks.SubsystemController;
 import frc.robot.Constants.Intake;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ConveyorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.joysticks.SubsystemController;
+import frc.robot.subsystems.superStructure.ConveyorSubsystem;
+import frc.robot.subsystems.superStructure.IntakeSubsystem;
 
 
 public class IntakeMotorCatchBall extends Command{
@@ -31,7 +31,7 @@ public class IntakeMotorCatchBall extends Command{
         return 
         !controller.getIntakeButton().getAsBoolean() && 
         !controller.getIntakeAndConveyorButton().getAsBoolean() ||
-        conveyorSubsystem.ballInConveyor();
+        conveyorSubsystem.getHasBall();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.superStructure;
 
 import frc.robot.Constants.Conveyor;
 import com.revrobotics.spark.SparkMax;
@@ -30,7 +30,7 @@ public class ConveyorSubsystem extends SubsystemBase {
         this.conveyor.set(speed);
     }
 
-    public boolean ballInConveyor(){
+    public boolean getHasBall(){
         return !sensor.get();
     }
 
