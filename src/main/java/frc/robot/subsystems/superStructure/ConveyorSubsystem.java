@@ -1,7 +1,8 @@
 package frc.robot.subsystems.superStructure;
 
 import frc.robot.Constants.Conveyor;
-import com.revrobotics.spark.SparkMax;
+
+import frc.FRC9485.motors.SparkMaxMotors;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -10,12 +11,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ConveyorSubsystem extends SubsystemBase {
     private static ConveyorSubsystem m_instance;
 
-    private SparkMax conveyor;
+    private SparkMaxMotors conveyor;
     private DigitalInput sensor;
 
     private ConveyorSubsystem() {
         this.sensor = new DigitalInput(Conveyor.OPTICAL_SENSOR_ID);
-        this.conveyor = new SparkMax(Conveyor.CONVEYOR_MOTOR_ID, MotorType.kBrushed);
+        this.conveyor = new SparkMaxMotors(
+                Conveyor.CONVEYOR_MOTOR_ID,
+                MotorType.kBrushed,
+                false,
+                "conveyor"
+            );
     }
 
     public static ConveyorSubsystem getInstance() {
@@ -30,7 +36,7 @@ public class ConveyorSubsystem extends SubsystemBase {
         this.conveyor.set(speed);
     }
 
-    public boolean getHasBall(){
+    public boolean getHassB(){
         return !sensor.get();
     }
 

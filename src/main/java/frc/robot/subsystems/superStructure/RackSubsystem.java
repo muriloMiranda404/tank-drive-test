@@ -1,24 +1,28 @@
 package frc.robot.subsystems.superStructure;
 
+import frc.FRC9485.motors.SparkMaxMotors;
+import frc.robot.Constants.Rack;
+
 import java.util.function.DoubleSupplier;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.FRC9485.joysticks.SubsystemController;
-import frc.robot.Constants.Rack;
 
 public class RackSubsystem extends SubsystemBase {
     private static RackSubsystem m_instance;
     
-    private SparkMax rackMotor;
+    private SparkMaxMotors rackMotor;
 
     private RackSubsystem() {
-        this.rackMotor = new SparkMax(Rack.RACK_MOTOR_ID, MotorType.kBrushless);
+        this.rackMotor = new SparkMaxMotors(
+            Rack.RACK_MOTOR_ID, 
+            MotorType.kBrushless,
+            true,
+            "rack"
+        );
     }
 
     public static RackSubsystem getInstance() {
@@ -30,7 +34,7 @@ public class RackSubsystem extends SubsystemBase {
     } 
 
     public RelativeEncoder getEncoder() {
-        return this.rackMotor.getEncoder();
+        return this.rackMotor.getAlternativeEncoder(true);
     }
     
     public double getSpeed() {

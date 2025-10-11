@@ -1,8 +1,8 @@
 package frc.robot.subsystems.superStructure;
 
+import frc.FRC9485.motors.SparkMaxMotors;
 import frc.robot.Constants.Intake;
 
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -10,11 +10,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class IntakeSubsystem extends SubsystemBase {
     private static IntakeSubsystem m_instance;
 
-    private SparkMax intakeMotor;
+    private SparkMaxMotors intakeMotor;
 
 
     private IntakeSubsystem() {
-        this.intakeMotor = new SparkMax(Intake.INTAKE_MOTOR_ID, MotorType.kBrushless);
+        this.intakeMotor = new SparkMaxMotors(
+            Intake.INTAKE_MOTOR_ID,
+            MotorType.kBrushless,
+            true,
+            "intake"
+        );
     }
 
     public static IntakeSubsystem getInstance() {

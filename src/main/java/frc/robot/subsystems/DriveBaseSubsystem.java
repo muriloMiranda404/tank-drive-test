@@ -1,25 +1,25 @@
 package frc.robot.subsystems;
 
-import frc.FRC9485.joysticks.DriverController;
-import frc.FRC9485.motors.SparkMaxMotors;
 import frc.robot.Constants.DriveBase;
+
+import frc.FRC9485.motors.SparkMaxMotors;
+import frc.FRC9485.joysticks.DriverController;
 
 import java.util.function.DoubleSupplier;
 
-import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.PersistMode;
 
-import edu.wpi.first.util.sendable.SendableRegistry;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.util.sendable.SendableRegistry;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveBaseSubsystem extends SubsystemBase {
   private static DriveBaseSubsystem m_instance;
@@ -40,11 +40,33 @@ public class DriveBaseSubsystem extends SubsystemBase {
   private SparkMaxConfig leftFollowConfig;
   
   private DriveBaseSubsystem() {
-    this.leftLeader = new SparkMaxMotors(DriveBase.LEFT_MOTOR_LEADER_ID, SparkMax.MotorType.kBrushed, false, "left-leader");
-    this.leftFollow = new SparkMaxMotors(DriveBase.LEFT_MOTOR_FOLLOW_ID, SparkMax.MotorType.kBrushed, false, "left-follow");
+    this.leftLeader = new SparkMaxMotors(
+      DriveBase.LEFT_MOTOR_LEADER_ID, 
+      SparkMax.MotorType.kBrushed, 
+      false,
+      "left-leader"
+    );
 
-    this.rightLeader  = new SparkMaxMotors(DriveBase.RIGHT_MOTOR_LEADER_ID, SparkMax.MotorType.kBrushed, false, "right-leader");
-    this.rightFollow = new SparkMaxMotors(DriveBase.RIGHT_MOTOR_FOLLOW_ID, SparkMax.MotorType.kBrushed, false, "right-follow");
+    this.leftFollow = new SparkMaxMotors(
+      DriveBase.LEFT_MOTOR_FOLLOW_ID,
+      SparkMax.MotorType.kBrushed,
+      false,
+      "left-follow"
+    );
+
+    this.rightLeader  = new SparkMaxMotors(
+      DriveBase.RIGHT_MOTOR_LEADER_ID,
+      SparkMax.MotorType.kBrushed,
+      false,
+      "right-leader"
+    );
+
+    this.rightFollow = new SparkMaxMotors(
+      DriveBase.RIGHT_MOTOR_FOLLOW_ID,
+      SparkMax.MotorType.kBrushed,
+      false,
+      "right-follow"
+    );
 
     this.global = new SparkMaxConfig();
     this.rightLeaderConfig = new SparkMaxConfig();

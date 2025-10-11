@@ -1,8 +1,8 @@
 package frc.robot.subsystems.superStructure;
 
+import frc.FRC9485.motors.SparkMaxMotors;
 import frc.robot.Constants.Shooter;
 
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -10,12 +10,23 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ShooterSubsystem extends SubsystemBase {
     private static ShooterSubsystem m_instance;
 
-    private SparkMax shooterDown;
-    private SparkMax shooterUp;
+    private SparkMaxMotors shooterDown;
+    private SparkMaxMotors shooterUp;
 
     private ShooterSubsystem() {
-        this.shooterDown = new SparkMax(Shooter.SHOOTER_DOWN_MOTOR_ID, MotorType.kBrushless);
-        this.shooterUp = new SparkMax(Shooter.SHOOTER_UP_MOTOR_ID, MotorType.kBrushless);
+        this.shooterDown = new SparkMaxMotors(
+            Shooter.SHOOTER_DOWN_MOTOR_ID, 
+            MotorType.kBrushless,
+            true,
+            "shooter-down"
+        );
+        
+        this.shooterUp = new SparkMaxMotors(
+            Shooter.SHOOTER_UP_MOTOR_ID, 
+            MotorType.kBrushless,
+            true,
+            "shooter-up"
+        );
     }
 
     public static ShooterSubsystem getInstance() {

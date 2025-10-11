@@ -7,6 +7,7 @@ import frc.FRC9485.joysticks.SubsystemController;
 
 import frc.robot.subsystems.vision.RaspberrySubsystem;
 import frc.robot.subsystems.DriveBaseSubsystem;
+import frc.robot.subsystems.SuperStructure;
 import frc.robot.subsystems.superStructure.RackSubsystem;
 
 
@@ -16,13 +17,16 @@ public class RobotContainer {
   SubsystemController subsystemController = SubsystemController.getInstance();
 
   // Subsistemas
-  DriveBaseSubsystem driveBaseSubsystem = DriveBaseSubsystem.getInstance();
-  RaspberrySubsystem raspberrySubsystem = RaspberrySubsystem.getInstance("raspberry");
-
   RackSubsystem rackSubsystem;
+  SuperStructure superStructure;
+  DriveBaseSubsystem driveBaseSubsystem;
+  RaspberrySubsystem raspberrySubsystem;
 
   public RobotContainer() {
     rackSubsystem = RackSubsystem.getInstance();
+    superStructure = SuperStructure.getInstance();
+    driveBaseSubsystem = DriveBaseSubsystem.getInstance();
+    raspberrySubsystem = RaspberrySubsystem.getInstance("raspberry");
 
     driveBaseSubsystem.setDefaultCommand(
       driveBaseSubsystem.driveTank(
