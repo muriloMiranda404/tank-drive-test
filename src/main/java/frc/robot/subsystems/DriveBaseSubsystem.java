@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants.DriveBase;
 
-import frc.FRC9485.motors.SparkMaxMotors;
+import frc.FRC9485.motors.SparkMaxMotor;
 import frc.FRC9485.joysticks.DriverController;
 
 import java.util.function.DoubleSupplier;
@@ -26,10 +26,10 @@ public class DriveBaseSubsystem extends SubsystemBase {
 
   private ShuffleboardTab tab;
 
-  private SparkMaxMotors rightLeader;
-  private SparkMaxMotors rightFollow;
-  private SparkMaxMotors leftLeader;
-  private SparkMaxMotors leftFollow;
+  private SparkMaxMotor rightLeader;
+  private SparkMaxMotor rightFollow;
+  private SparkMaxMotor leftLeader;
+  private SparkMaxMotor leftFollow;
 
   private DifferentialDrive driver;
 
@@ -40,28 +40,28 @@ public class DriveBaseSubsystem extends SubsystemBase {
   private SparkMaxConfig leftFollowConfig;
   
   private DriveBaseSubsystem() {
-    this.leftLeader = new SparkMaxMotors(
+    this.leftLeader = new SparkMaxMotor(
       DriveBase.LEFT_MOTOR_LEADER_ID, 
       SparkMax.MotorType.kBrushed, 
       false,
       "left-leader"
     );
 
-    this.leftFollow = new SparkMaxMotors(
+    this.leftFollow = new SparkMaxMotor(
       DriveBase.LEFT_MOTOR_FOLLOW_ID,
       SparkMax.MotorType.kBrushed,
       false,
       "left-follow"
     );
 
-    this.rightLeader  = new SparkMaxMotors(
+    this.rightLeader  = new SparkMaxMotor(
       DriveBase.RIGHT_MOTOR_LEADER_ID,
       SparkMax.MotorType.kBrushed,
       false,
       "right-leader"
     );
 
-    this.rightFollow = new SparkMaxMotors(
+    this.rightFollow = new SparkMaxMotor(
       DriveBase.RIGHT_MOTOR_FOLLOW_ID,
       SparkMax.MotorType.kBrushed,
       false,

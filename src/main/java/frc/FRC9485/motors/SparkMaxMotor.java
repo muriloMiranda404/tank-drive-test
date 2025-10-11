@@ -23,7 +23,7 @@ import static edu.wpi.first.units.Units.Seconds;
 
 import frc.FRC9485.exceptions.IllegalRobotState;
 
-public class SparkMaxMotors extends SparkMaxMotorsBase {
+public class SparkMaxMotor extends SparkMaxMotorBase {
 
     private int id;
     private String name;
@@ -34,7 +34,7 @@ public class SparkMaxMotors extends SparkMaxMotorsBase {
     private PIDController controller;
     private double percentOutput = 0;
 
-    public SparkMaxMotors(int id, MotorType motorType, boolean usingInternalEncoder, String name){
+    public SparkMaxMotor(int id, MotorType motorType, boolean usingInternalEncoder, String name){
         this.id = id;
         this.name = name;
         this.isInverted = false;

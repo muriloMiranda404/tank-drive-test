@@ -8,7 +8,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
-public abstract class SparkMaxMotorsBase implements MotorIO, MotorController {
+public abstract class SparkMaxMotorBase implements MotorIO, MotorController {
     @Override
     public abstract void configureSpark(Supplier<REVLibError> config);
 

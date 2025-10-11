@@ -1,6 +1,6 @@
 package frc.robot.subsystems.superStructure;
 
-import frc.FRC9485.motors.SparkMaxMotors;
+import frc.FRC9485.motors.SparkMaxMotor;
 import frc.robot.Constants.Rack;
 
 import java.util.function.DoubleSupplier;
@@ -14,10 +14,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class RackSubsystem extends SubsystemBase {
     private static RackSubsystem m_instance;
     
-    private SparkMaxMotors rackMotor;
+    private SparkMaxMotor rackMotor;
 
     private RackSubsystem() {
-        this.rackMotor = new SparkMaxMotors(
+        this.rackMotor = new SparkMaxMotor(
             Rack.RACK_MOTOR_ID, 
             MotorType.kBrushless,
             true,
