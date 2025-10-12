@@ -1,14 +1,13 @@
 package frc.robot.subsystems.vision;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.FRC9485.utils.logger.CustomBooleanLog;
+import frc.FRC9485.utils.logger.CustomDoubleLog;
+import frc.FRC9485.utils.logger.CustomStringLog;
 import frc.robot.subsystems.vision.IO.RaspberrySubsystemIO;
-import edu.wpi.first.networktables.GenericEntry;
+
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 
 public class RaspberrySubsystem extends SubsystemBase implements RaspberrySubsystemIO{
     private static RaspberrySubsystem m_instance;
@@ -19,67 +18,24 @@ public class RaspberrySubsystem extends SubsystemBase implements RaspberrySubsys
     private NetworkTable raspberryTable;
     private NetworkTable detectionsTable;
 
-    // Shuflleboard Logging
-    private ShuffleboardTab shuffleboardTab;
-    private GenericEntry shuffleboardEntrys[] = new GenericEntry[3]; 
+    // Logging
+    private CustomDoubleLog txLogger;
+    private CustomDoubleLog tyLogger;
+    private CustomBooleanLog tvLogger;
+    private CustomStringLog clsNameLogger;
+    private CustomDoubleLog minConfLogger;
 
     private RaspberrySubsystem(String raspberryTablePath) {
+        txLogger = new CustomDoubleLog("Raspberry1/TX");
+        tyLogger = new CustomDoubleLog("Raspberry1/TY");
+        tvLogger = new CustomBooleanLog("Raspberry1/TV");
+        clsNameLogger = new CustomStringLog("Raspberry1/Cls Name");
+        minConfLogger = new CustomDoubleLog("Raspberry1/Min Conf");
+
         this.raspberryTable = NetworkTableInstance.getDefault().getTable(raspberryTablePath);
         this.detectionsTable = raspberryTable.getSubTable("detections");
         this.visionTable = detectionsTable.getSubTable("vision");
         this.configTable = detectionsTable.getSubTable("config");
-        this.shuffleboardEntrys = this.initializeShuffleboardLogging(raspberryTablePath);
-    }
-
-    private GenericEntry[] initializeShuffleboardLogging(String raspberryTablePath) {
-        final double MIN_CONF = 0.7;
-
-        GenericEntry entrys[] = new GenericEntry[3];
-
-        this.shuffleboardTab = Shuffleboard.getTab(raspberryTablePath);
-        ShuffleboardLayout targetInformationsLayout =
-          this.shuffleboardTab.getLayout("Target Informations", BuiltInLayouts.kList);
-        
-        targetInformationsLayout
-          .withPosition(0, 0)
-          .withSize(3, 2);
-        
-        GenericEntry tx = 
-          targetInformationsLayout
-          .add("TX", 0)
-          .getEntry();
-
-        GenericEntry ty = 
-          targetInformationsLayout
-          .add("TY", 0)
-          .getEntry();
-        
-        GenericEntry tv =
-          targetInformationsLayout
-          .add("TV", false)
-          .getEntry();
-
-        entrys[0] = tx;
-        entrys[1] = ty;
-        entrys[2] = tv;
-        
-        this.shuffleboardTab
-        .add("min_conf", MIN_CONF)
-        .withWidget("Number Slider")
-        .withPosition(3, 0)
-        .withSize(1, 1);
-
-        return entrys;
-    }
-
-    private void updateShuffleboardLoggingValues(GenericEntry[] entrys) {
-        GenericEntry tx = entrys[0];
-        GenericEntry ty = entrys[1];
-        GenericEntry tv = entrys[2];
-
-        tx.setDouble(getTX());
-        ty.setDouble(getTY());
-        tv.setBoolean(getTV());
     }
 
     public static RaspberrySubsystem getInstance(String raspberryTablePath) {
@@ -121,6 +77,11 @@ public class RaspberrySubsystem extends SubsystemBase implements RaspberrySubsys
 
     @Override
     public void periodic() {
-        this.updateShuffleboardLoggingValues(shuffleboardEntrys);
+        txLogger.append(getTX());
+        tyLogger.append(getTY());
+        tvLogger.append(getTV());
+
+        clsNameLogger.append(getClsName());
+        minConfLogger.append(getMinConf());
     }
 }

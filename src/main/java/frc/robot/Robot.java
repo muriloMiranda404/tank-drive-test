@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.net.WebServer;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -12,6 +14,7 @@ public class Robot extends TimedRobot{
   @Override
   public void robotInit() {
     System.out.println("robo ligado!");
+  WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
     m_robotContainer = new RobotContainer();
   }
 
@@ -27,7 +30,4 @@ public class Robot extends TimedRobot{
     }
     RackSubsystem.getInstance().resetEncoder();
   }
-  
-  @Override
-  public void teleopPeriodic() {}
 }

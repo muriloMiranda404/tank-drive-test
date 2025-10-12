@@ -1,20 +1,30 @@
 package frc.robot.subsystems.mechanisms;
 
-import frc.FRC9485.motors.SparkMaxMotor;
 import frc.robot.Constants.Shooter;
+import frc.FRC9485.motors.SparkMaxMotor;
+import frc.FRC9485.utils.logger.CustomDoubleLog;
 import frc.robot.subsystems.mechanisms.IO.ShooterSubsystemIO;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ShooterSubsystem extends SubsystemBase implements ShooterSubsystemIO{
     private static ShooterSubsystem m_instance;
 
-    private SparkMaxMotor shooterDown;
     private SparkMaxMotor shooterUp;
+    private SparkMaxMotor shooterDown;
+
+    // Logging
+    private CustomDoubleLog upSpeedLogger;
+    private CustomDoubleLog downSpeedLogger;
 
     private ShooterSubsystem() {
+        SmartDashboard.putData("Shooter/Subsystem", this);
+        this.upSpeedLogger = new CustomDoubleLog("Shooter/Up Speed");
+        this.downSpeedLogger = new CustomDoubleLog("Shooter/Down Speed");
+
         this.shooterDown = new SparkMaxMotor(
             Shooter.SHOOTER_DOWN_MOTOR_ID, 
             MotorType.kBrushless,
@@ -28,6 +38,7 @@ public class ShooterSubsystem extends SubsystemBase implements ShooterSubsystemI
             true,
             "shooter-up"
         );
+
     }
 
     public static ShooterSubsystem getInstance() {
@@ -80,4 +91,9 @@ public class ShooterSubsystem extends SubsystemBase implements ShooterSubsystemI
         return this.shooterDown.get();
     }
 
+    @Override
+    public void periodic() {
+        this.upSpeedLogger.append(getUpSpeed());
+        this.downSpeedLogger.append(getDownSpeed());
+    }
 }

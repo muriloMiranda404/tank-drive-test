@@ -1,6 +1,7 @@
 package frc.robot.subsystems.mechanisms;
 
 import frc.FRC9485.motors.SparkMaxMotor;
+import frc.FRC9485.utils.logger.CustomDoubleLog;
 import frc.robot.Constants.Rack;
 import frc.robot.subsystems.mechanisms.IO.RackSubsystemIO;
 
@@ -9,15 +10,24 @@ import java.util.function.DoubleSupplier;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class RackSubsystem extends SubsystemBase implements RackSubsystemIO {
     private static RackSubsystem m_instance;
-    
+
     private SparkMaxMotor rackMotor;
 
+    // Logging
+    private CustomDoubleLog speedLogger;
+    private CustomDoubleLog encoderPositionLogger;
+
     private RackSubsystem() {
+        SmartDashboard.putData("Rack/Subsystem", this);
+        speedLogger = new CustomDoubleLog("Rack/Speed");
+        encoderPositionLogger = new CustomDoubleLog("Rack/Encoder Position");
+
         this.rackMotor = new SparkMaxMotor(
             Rack.RACK_MOTOR_ID, 
             MotorType.kBrushless,
@@ -71,5 +81,7 @@ public class RackSubsystem extends SubsystemBase implements RackSubsystemIO {
 
     @Override
     public void periodic() {
+        speedLogger.append(getSpeed());
+        encoderPositionLogger.append(getPosition());
     }
 }

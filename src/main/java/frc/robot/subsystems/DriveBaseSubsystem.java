@@ -1,9 +1,10 @@
 package frc.robot.subsystems;
 
-import frc.robot.Constants.DriveBase;
-import frc.robot.subsystems.IO.DriveBaseSubsystemIO;
 import frc.FRC9485.motors.SparkMaxMotor;
 import frc.FRC9485.joysticks.DriverController;
+
+import frc.robot.Constants.DriveBase;
+import frc.robot.subsystems.IO.DriveBaseSubsystemIO;
 
 import java.util.function.DoubleSupplier;
 
@@ -13,18 +14,14 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.util.sendable.SendableRegistry;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveBaseSubsystem extends SubsystemBase implements DriveBaseSubsystemIO {
   private static DriveBaseSubsystem m_instance;
-
-  private ShuffleboardTab tab;
 
   private SparkMaxMotor rightLeader;
   private SparkMaxMotor rightFollow;
@@ -40,6 +37,13 @@ public class DriveBaseSubsystem extends SubsystemBase implements DriveBaseSubsys
   private SparkMaxConfig leftFollowConfig;
   
   private DriveBaseSubsystem() {
+    setupSparks();
+
+    SmartDashboard.putData("Tank/Subsystem", this);
+    SmartDashboard.putData("Tank/DifferentialDrive", driver);
+  }
+
+  private void setupSparks() {
     this.leftLeader = new SparkMaxMotor(
       DriveBase.LEFT_MOTOR_LEADER_ID, 
       SparkMax.MotorType.kBrushed, 
@@ -74,8 +78,6 @@ public class DriveBaseSubsystem extends SubsystemBase implements DriveBaseSubsys
     this.leftLeaderConfig = new SparkMaxConfig();
     this.leftFollowConfig = new SparkMaxConfig();
 
-    this.driver = new DifferentialDrive(rightLeader, leftLeader);
-
     this.global
     .idleMode(IdleMode.kBrake);
 
@@ -103,11 +105,7 @@ public class DriveBaseSubsystem extends SubsystemBase implements DriveBaseSubsys
     this.leftFollow.updateConfig(leftFollowConfig);
     this.rightFollow.updateConfig(rightFollowConfig);
 
-    tab = Shuffleboard.getTab("Tank");
-    SendableRegistry.addChild(driver, leftLeader);
-    SendableRegistry.addChild(driver, rightLeader);
-
-    tab.add("Tank", driver);
+    this.driver = new DifferentialDrive(rightLeader, leftLeader);
   }
 
   public static DriveBaseSubsystem getInstance() {

@@ -32,4 +32,9 @@ public class SuperStructure extends SubsystemBase implements SuperStructureIO {
             )
         );
     }
+
+    @Override
+    public void periodic() {
+        
+    }
 } 

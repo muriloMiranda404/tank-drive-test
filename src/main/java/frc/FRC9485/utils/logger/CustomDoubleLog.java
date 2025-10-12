@@ -7,15 +7,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CustomDoubleLog extends DoubleLogEntry{
     
-    private static boolean isFms;
     private String name;
+    private static boolean isFms;
     private double loggedValue;
 
     public CustomDoubleLog(String name){
         super(DataLogManager.getLog(), name);
         this.name = name;
-        CustomDoubleLog.isFms = DriverStation.getMatchNumber() > 0;
         this.loggedValue = 0;
+        this.append(0);
+        CustomDoubleLog.isFms = DriverStation.getMatchNumber() > 0;
     }
 
     @Override

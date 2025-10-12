@@ -1,10 +1,14 @@
 package frc.robot.subsystems.mechanisms;
 
+import frc.FRC9485.utils.logger.CustomBooleanLog;
+import frc.FRC9485.utils.logger.CustomDoubleLog;
+import frc.FRC9485.utils.logger.CustomStringLog;
 import frc.robot.Constants.Pneumatics;
 import frc.robot.subsystems.mechanisms.IO.PneumaticsSubsystemIO;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class PneumaticSubsystem extends SubsystemBase implements PneumaticsSubsystemIO{
@@ -15,7 +19,19 @@ public class PneumaticSubsystem extends SubsystemBase implements PneumaticsSubsy
     private PneumaticHub pneumaticHub;
     private DoubleSolenoid doubleSolenoid;
 
+    // Logging
+    private CustomDoubleLog currentPressureLogger;
+    private CustomBooleanLog fwdChannelEnabledLogger;
+    private CustomBooleanLog revChannelEnabledLogger;
+    private CustomStringLog currentChannelEnabledLogger;
+
     private PneumaticSubsystem(double min, double max) {
+        SmartDashboard.putData("Pneumatics/Subsystem", this);
+        currentPressureLogger = new CustomDoubleLog("Pneumatics/Current Pressure");
+        fwdChannelEnabledLogger = new CustomBooleanLog("Pneumatics/Fwd Channel Enabled");
+        revChannelEnabledLogger = new CustomBooleanLog("Pneumatics/Rev Channel Enabled");
+        currentChannelEnabledLogger = new CustomStringLog("Pneumatics/Current Channel Enabled");
+
         this.min = min;
         this.max = max;
 
@@ -69,6 +85,10 @@ public class PneumaticSubsystem extends SubsystemBase implements PneumaticsSubsy
     
     @Override
     public void periodic() {
-        this.pneumaticHub.enableCompressorAnalog(min, max);
+        pneumaticHub.enableCompressorAnalog(min, max);
+        currentPressureLogger.append(getPressure());
+        revChannelEnabledLogger.append(isRevChannelDisabled());
+        fwdChannelEnabledLogger.append(isFwdChannelDisabled());
+        currentChannelEnabledLogger.append(getChannelEnabled());
     }
 }
