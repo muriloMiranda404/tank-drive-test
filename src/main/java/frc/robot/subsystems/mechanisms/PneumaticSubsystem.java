@@ -74,8 +74,7 @@ public class PneumaticSubsystem extends SubsystemBase implements PneumaticsSubsy
 
     @Override
     public boolean isFwdChannelDisabled() {
-        return true;
-        // return this.doubleSolenoid.isFwdSolenoidDisabled();
+        return this.doubleSolenoid.isFwdSolenoidDisabled();
     }
 
     @Override
