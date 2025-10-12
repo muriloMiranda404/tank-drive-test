@@ -8,7 +8,7 @@ import frc.FRC9485.joysticks.SubsystemController;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Conveyor.EnableConveyor;
 import frc.robot.commands.Intake.EnableIntakeMotor;
-
+import frc.robot.commands.Shooter.EnableShooter;
 import frc.robot.subsystems.SuperStructure;
 import frc.robot.subsystems.DriveBaseSubsystem;
 import frc.robot.subsystems.mechanisms.RackSubsystem;
@@ -54,7 +54,7 @@ public class RobotContainer {
   }
 
   public void configureShooterBindings() {
-    subsystemController.getShooterButton().whileTrue(superStructure.scoreRobot());
+    subsystemController.getShooterButton().whileTrue(new EnableShooter());
   }
 
   public void configureConveyorBindings() {
