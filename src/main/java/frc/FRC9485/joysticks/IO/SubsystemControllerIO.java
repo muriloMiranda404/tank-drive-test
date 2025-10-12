@@ -6,7 +6,7 @@ public interface SubsystemControllerIO {
     Trigger getIntakeButton();
     Trigger getShooterButton();
     Trigger getConveyorButton();
-    Trigger getIntakeAndConveyorButton();
+    Trigger getCatchBallButton();
 
     double getRackSpeed();
     double getShooterUpSpeed();

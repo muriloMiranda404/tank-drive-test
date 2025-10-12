@@ -2,8 +2,8 @@ package frc.robot.commands.Conveyor;
 
 import frc.FRC9485.joysticks.SubsystemController;
 import frc.robot.Constants.Conveyor;
+import frc.robot.subsystems.mechanisms.ConveyorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.superStructure.ConveyorSubsystem;
 
 public class EnableConveyor extends Command {
     private boolean stop;
@@ -28,7 +28,7 @@ public class EnableConveyor extends Command {
     public boolean isFinished() {
         return 
         !controller.getConveyorButton().getAsBoolean() &&
-        !controller.getIntakeAndConveyorButton().getAsBoolean()|| 
+        !controller.getCatchBallButton().getAsBoolean()|| 
         (stop == true && conveyorSubsystem.getHasBall());
     }
 

@@ -2,17 +2,17 @@ package frc.robot.commands.Intake;
 
 import frc.FRC9485.joysticks.SubsystemController;
 import frc.robot.Constants.Intake;
+import frc.robot.subsystems.mechanisms.ConveyorSubsystem;
+import frc.robot.subsystems.mechanisms.IntakeSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.superStructure.ConveyorSubsystem;
-import frc.robot.subsystems.superStructure.IntakeSubsystem;
 
 
-public class IntakeMotorCatchBall extends Command{
+public class EnableIntakeMotor extends Command{
     private SubsystemController controller;
     private IntakeSubsystem intakeSubsystem;
     private ConveyorSubsystem conveyorSubsystem;
 
-    public IntakeMotorCatchBall() {
+    public EnableIntakeMotor() {
         this.controller = SubsystemController.getInstance();
         this.intakeSubsystem = IntakeSubsystem.getInstance();
         this.conveyorSubsystem = ConveyorSubsystem.getInstance();
@@ -30,7 +30,7 @@ public class IntakeMotorCatchBall extends Command{
     public boolean isFinished() {
         return 
         !controller.getIntakeButton().getAsBoolean() && 
-        !controller.getIntakeAndConveyorButton().getAsBoolean() ||
+        !controller.getCatchBallButton().getAsBoolean() ||
         conveyorSubsystem.getHasBall();
     }
 

@@ -1,19 +1,19 @@
 package frc.robot.subsystems;
 
-import java.util.function.DoubleSupplier;
+import frc.robot.commands.Intake.ToggleIntake;
+import frc.robot.commands.Shooter.EnableShooter;
+import frc.robot.commands.Conveyor.EnableConveyor;
+import frc.robot.commands.Intake.EnableIntakeMotor;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.superStructure.RackSubsystem;
 
 public class SuperStructure extends SubsystemBase {
     private static SuperStructure m_instance;
 
-    private RackSubsystem rackSubsystem;
-
-    private SuperStructure() {
-        this.rackSubsystem = RackSubsystem.getInstance();
-    }
+    private SuperStructure() {}
 
     public static SuperStructure getInstance() {
         if (m_instance == null) {
@@ -23,10 +23,22 @@ public class SuperStructure extends SubsystemBase {
         return m_instance;
     }
 
-    
-    
-    public Command setRackAngulation(DoubleSupplier speed) {
-        return rackSubsystem.setAngulation(speed);
+    public SequentialCommandGroup catchBall() {
+        return new SequentialCommandGroup(
+            new ToggleIntake(),
+            new ParallelCommandGroup(
+                new EnableIntakeMotor(),
+                new EnableConveyor(true)
+            )
+        );
+    }
+
+    public Command scoreRobot() {
+        return run(
+            () -> {
+                new EnableShooter();
+            }
+        );
     }
 
 } 

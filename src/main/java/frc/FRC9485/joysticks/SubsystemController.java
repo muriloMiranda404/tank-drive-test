@@ -43,7 +43,7 @@ public class SubsystemController implements SubsystemControllerIO{
     }
  
     @Override
-    public Trigger getIntakeAndConveyorButton() {
+    public Trigger getCatchBallButton() {
         return controller.button(rightBumper);
     }
     

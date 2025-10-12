@@ -29,9 +29,15 @@ public final class Constants {
   public static final class Intake {
     public static final double MAX_SPEED = -0.7;
     public static final int INTAKE_MOTOR_ID = 9;
+  }
+
+  public static final class Pneumatics {
     public static final int PNEUMATIC_HUB_ID = 1;
     public static final int DOUBLE_SOLENOID_FORWARD_CHANNEL = 0;
     public static final int DOUBLE_SOLENOID_REVERSE_CHANNEL = 2;
+
+    public static final int MIN_PRESSURE = 30;
+    public static final int MAX_PRESSURE = 40;
   }
 
   public static final class Conveyor {

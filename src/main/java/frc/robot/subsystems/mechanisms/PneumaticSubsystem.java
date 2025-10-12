@@ -1,7 +1,6 @@
-package frc.robot.subsystems.superStructure;
+package frc.robot.subsystems.mechanisms;
 
-import frc.robot.Constants.Intake;
-
+import frc.robot.Constants.Pneumatics;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -19,25 +18,28 @@ public class PneumaticSubsystem extends SubsystemBase{
         this.min = min;
         this.max = max;
 
-        this.pneumaticHub = new PneumaticHub(Intake.PNEUMATIC_HUB_ID);
+        this.pneumaticHub = new PneumaticHub(Pneumatics.PNEUMATIC_HUB_ID);
         this.pneumaticHub.clearStickyFaults();
         
         this.doubleSolenoid = new DoubleSolenoid(
             PneumaticsModuleType.REVPH,
-            Intake.DOUBLE_SOLENOID_FORWARD_CHANNEL, 
-            Intake.DOUBLE_SOLENOID_REVERSE_CHANNEL
+            Pneumatics.DOUBLE_SOLENOID_FORWARD_CHANNEL, 
+            Pneumatics.DOUBLE_SOLENOID_REVERSE_CHANNEL
         );
 
     }
 
-    public static PneumaticSubsystem getInstance(double min, double max) {
+    public static PneumaticSubsystem getInstance() {
         if (m_instance == null) {
-            m_instance = new PneumaticSubsystem(min, max);
+            m_instance = new PneumaticSubsystem(
+                    Pneumatics.MIN_PRESSURE, 
+                    Pneumatics.MAX_PRESSURE
+                );
         }
         return m_instance;
     }
 
-    public void toggledSolenoid() {
+    public void toggleSolenoid() {
         this.doubleSolenoid.toggle();
     }
 
@@ -45,16 +47,16 @@ public class PneumaticSubsystem extends SubsystemBase{
         return this.pneumaticHub.getPressure(0);
     }
 
-    public String getChaneelEnable() {
+    public String getChaneelEnabled() {
         if (!this.doubleSolenoid.isFwdSolenoidDisabled()) { return "fwd"; }
         return "rev";
     }
 
-    public boolean getFwdChannelDisabled() {
+    public boolean isFwdChannelDisabled() {
         return this.doubleSolenoid.isFwdSolenoidDisabled();
     }
 
-    public boolean getRevChannelDisabled() {
+    public boolean isRevChannelDisabled() {
         return this.doubleSolenoid.isRevSolenoidDisabled();
     }
     

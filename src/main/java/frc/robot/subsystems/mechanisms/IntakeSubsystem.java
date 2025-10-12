@@ -1,4 +1,4 @@
-package frc.robot.subsystems.superStructure;
+package frc.robot.subsystems.mechanisms;
 
 import frc.FRC9485.motors.SparkMaxMotor;
 import frc.robot.Constants.Intake;

@@ -5,10 +5,14 @@ import edu.wpi.first.math.MathUtil;
 import frc.FRC9485.joysticks.DriverController;
 import frc.FRC9485.joysticks.SubsystemController;
 
-import frc.robot.subsystems.vision.RaspberrySubsystem;
-import frc.robot.subsystems.DriveBaseSubsystem;
+import frc.robot.commands.Intake.CloseIntake;
+import frc.robot.commands.Conveyor.EnableConveyor;
+import frc.robot.commands.Intake.EnableIntakeMotor;
+
 import frc.robot.subsystems.SuperStructure;
-import frc.robot.subsystems.superStructure.RackSubsystem;
+import frc.robot.subsystems.DriveBaseSubsystem;
+import frc.robot.subsystems.mechanisms.RackSubsystem;
+import frc.robot.subsystems.vision.RaspberrySubsystem;
 
 
 public class RobotContainer {
@@ -36,26 +40,30 @@ public class RobotContainer {
 
         )
     );
-    
-    // rackSubsystem.setDefaultCommand(
-    //   rackSubsystem.setAngulation(subsystemController)
-    // );
 
-    // configureIntakeBindings();
-    // configureShooterBindings();
-    // configureConveyorBindings();
+    rackSubsystem.setDefaultCommand(
+      rackSubsystem.setAngulation(
+        () -> subsystemController.getRackSpeed()
+      )
+    );
+
+
+    configureIntakeBindings();
+    configureShooterBindings();
+    configureConveyorBindings();
   }
 
-  // public void configureShooterBindings() {
-  //   subsystemController.getShooterButton().whileTrue(new EnableShooter());
-  // }
+  public void configureShooterBindings() {
+    subsystemController.getShooterButton().whileTrue(superStructure.scoreRobot());
+  }
 
-  // public void configureConveyorBindings() {
-  //   subsystemController.getConveyorButton().whileTrue(new EnableConveyor(false));
-  // }
+  public void configureConveyorBindings() {
+    subsystemController.getConveyorButton().whileTrue(new EnableConveyor(false));
+  }
 
-  // public void configureIntakeBindings() {
-  //   subsystemController.getIntakeButton().whileTrue(new IntakeMotorCatchBall());
-  //   subsystemController.getIntakeAndConveyorButton().whileTrue(new ParallelCommandGroup(new EnableConveyor(true), new IntakeMotorCatchBall()));
-  // }
+  public void configureIntakeBindings() {
+    subsystemController.getCatchBallButton().onFalse(new CloseIntake());
+    subsystemController.getIntakeButton().whileTrue(new EnableIntakeMotor());
+    subsystemController.getCatchBallButton().whileTrue(superStructure.catchBall());
+  }
 }

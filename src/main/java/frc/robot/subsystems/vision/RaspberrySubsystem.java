@@ -20,14 +20,14 @@ public class RaspberrySubsystem extends SubsystemBase {
 
     // Shuflleboard Logging
     private ShuffleboardTab shuffleboardTab;
-    private GenericEntry logging_entrys[] = new GenericEntry[3]; 
+    private GenericEntry shuffleboardEntrys[] = new GenericEntry[3]; 
 
     private RaspberrySubsystem(String raspberryTablePath) {
         this.raspberryTable = NetworkTableInstance.getDefault().getTable(raspberryTablePath);
         this.detectionsTable = raspberryTable.getSubTable("detections");
         this.visionTable = detectionsTable.getSubTable("vision");
         this.configTable = detectionsTable.getSubTable("config");
-        this.logging_entrys = this.initializeShuffleboardLogging(raspberryTablePath);
+        this.shuffleboardEntrys = this.initializeShuffleboardLogging(raspberryTablePath);
     }
 
     private GenericEntry[] initializeShuffleboardLogging(String raspberryTablePath) {
@@ -64,6 +64,7 @@ public class RaspberrySubsystem extends SubsystemBase {
         
         this.shuffleboardTab
         .add("min_conf", MIN_CONF)
+        .withWidget("Number Slider")
         .withPosition(3, 0)
         .withSize(1, 1);
 
@@ -75,9 +76,9 @@ public class RaspberrySubsystem extends SubsystemBase {
         GenericEntry ty = entrys[1];
         GenericEntry tv = entrys[2];
 
-        tx.setDouble(this.getTargetX());
-        ty.setDouble(this.getTargetY());
-        tv.setBoolean(this.getTargetValid());
+        tx.setDouble(getTargetX());
+        ty.setDouble(getTargetY());
+        tv.setBoolean(getTargetValid());
     }
 
     public static RaspberrySubsystem getInstance(String raspberryTablePath) {
@@ -87,7 +88,6 @@ public class RaspberrySubsystem extends SubsystemBase {
         return m_instance;
     }
 
-    // VISION
     public String getClassName() {
         return this.visionTable.getEntry("cls_name").getString("");
     }
@@ -104,7 +104,6 @@ public class RaspberrySubsystem extends SubsystemBase {
         return this.visionTable.getEntry("ty").getDouble(0);
     }
 
-    // CONFIG
     public double getMinConf() {
         return configTable.getEntry("min_conf").getDouble(0);
     }
@@ -113,8 +112,12 @@ public class RaspberrySubsystem extends SubsystemBase {
         configTable.getEntry("min_conf").setDouble(value);
     }
 
+    // public String getHttpCameraAddres() {
+
+    // }
+
     @Override
     public void periodic() {
-        this.updateShuffleboardLoggingValues(this.logging_entrys);
+        this.updateShuffleboardLoggingValues(shuffleboardEntrys);
     }
 }
