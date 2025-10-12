@@ -1,12 +1,13 @@
 package frc.robot.subsystems.mechanisms;
 
 import frc.robot.Constants.Pneumatics;
+import frc.robot.subsystems.mechanisms.IO.PneumaticsSubsystemIO;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class PneumaticSubsystem extends SubsystemBase{
+public class PneumaticSubsystem extends SubsystemBase implements PneumaticsSubsystemIO{
     private static PneumaticSubsystem m_instance;
 
     private double min;
@@ -39,23 +40,28 @@ public class PneumaticSubsystem extends SubsystemBase{
         return m_instance;
     }
 
+    @Override
     public void toggleSolenoid() {
         this.doubleSolenoid.toggle();
     }
 
+    @Override
     public double getPressure() {
         return this.pneumaticHub.getPressure(0);
     }
 
-    public String getChaneelEnabled() {
+    @Override
+    public String getChannelEnabled() {
         if (!this.doubleSolenoid.isFwdSolenoidDisabled()) { return "fwd"; }
         return "rev";
     }
 
+    @Override
     public boolean isFwdChannelDisabled() {
         return this.doubleSolenoid.isFwdSolenoidDisabled();
     }
 
+    @Override
     public boolean isRevChannelDisabled() {
         return this.doubleSolenoid.isRevSolenoidDisabled();
     }

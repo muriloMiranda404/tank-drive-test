@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants.DriveBase;
-
+import frc.robot.subsystems.IO.DriveBaseSubsystemIO;
 import frc.FRC9485.motors.SparkMaxMotor;
 import frc.FRC9485.joysticks.DriverController;
 
@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
-public class DriveBaseSubsystem extends SubsystemBase {
+public class DriveBaseSubsystem extends SubsystemBase implements DriveBaseSubsystemIO {
   private static DriveBaseSubsystem m_instance;
 
   private ShuffleboardTab tab;
@@ -193,7 +193,8 @@ public class DriveBaseSubsystem extends SubsystemBase {
     return doubleTranslation;
   }
 
-  public Command driveTank(DriverController controller, DoubleSupplier translation, DoubleSupplier rotation){
+  @Override
+  public Command driveTank(DriverController controller, DoubleSupplier translation, DoubleSupplier rotation) {
     return run(() -> {
       double doubleTranslation = translation.getAsDouble();
       double doubleRotation = rotation.getAsDouble();
@@ -208,6 +209,7 @@ public class DriveBaseSubsystem extends SubsystemBase {
     });
   }
 
+  @Override
   public void stopMotor(){
     driver.stopMotor();
   }

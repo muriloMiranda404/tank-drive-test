@@ -1,6 +1,7 @@
 package frc.robot.subsystems.vision;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.vision.IO.RaspberrySubsystemIO;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -9,7 +10,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 
-public class RaspberrySubsystem extends SubsystemBase {
+public class RaspberrySubsystem extends SubsystemBase implements RaspberrySubsystemIO{
     private static RaspberrySubsystem m_instance;
     
     // NetworkTables config
@@ -76,9 +77,9 @@ public class RaspberrySubsystem extends SubsystemBase {
         GenericEntry ty = entrys[1];
         GenericEntry tv = entrys[2];
 
-        tx.setDouble(getTargetX());
-        ty.setDouble(getTargetY());
-        tv.setBoolean(getTargetValid());
+        tx.setDouble(getTX());
+        ty.setDouble(getTY());
+        tv.setBoolean(getTV());
     }
 
     public static RaspberrySubsystem getInstance(String raspberryTablePath) {
@@ -88,33 +89,35 @@ public class RaspberrySubsystem extends SubsystemBase {
         return m_instance;
     }
 
-    public String getClassName() {
+    @Override
+    public String getClsName() {
         return this.visionTable.getEntry("cls_name").getString("");
     }
 
-    public boolean getTargetValid() {
+    @Override
+    public boolean getTV() {
         return this.visionTable.getEntry("tv").getBoolean(false);
     }
 
-    public double getTargetX() {
+    @Override
+    public double getTX() {
         return this.visionTable.getEntry("tx").getDouble(0);
     }
 
-    public double getTargetY() {
+    @Override
+    public double getTY() {
         return this.visionTable.getEntry("ty").getDouble(0);
     }
 
+    @Override
     public double getMinConf() {
         return configTable.getEntry("min_conf").getDouble(0);
     }
 
-    public void setMinConf(double value) {
-        configTable.getEntry("min_conf").setDouble(value);
+    @Override
+    public void setMinConf(double val) {
+        configTable.getEntry("min_conf").setDouble(val);
     }
-
-    // public String getHttpCameraAddres() {
-
-    // }
 
     @Override
     public void periodic() {

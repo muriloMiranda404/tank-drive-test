@@ -2,16 +2,16 @@ package frc.robot.subsystems.mechanisms;
 
 import frc.FRC9485.motors.SparkMaxMotor;
 import frc.robot.Constants.Intake;
+import frc.robot.subsystems.mechanisms.IO.IntakeSubsystemIO;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class IntakeSubsystem extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase implements IntakeSubsystemIO{
     private static IntakeSubsystem m_instance;
 
     private SparkMaxMotor intakeMotor;
-
 
     private IntakeSubsystem() {
         this.intakeMotor = new SparkMaxMotor(
@@ -30,10 +30,12 @@ public class IntakeSubsystem extends SubsystemBase {
         return m_instance;
     } 
 
+    @Override
     public void setSpeed(double speed) {
         this.intakeMotor.set(speed);
     }
 
+    @Override
     public void stopMotor() {
         this.intakeMotor.set(0);
     }
