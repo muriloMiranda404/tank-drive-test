@@ -82,20 +82,20 @@ public class DriveBaseSubsystem extends SubsystemBase implements DriveBaseSubsys
     .idleMode(IdleMode.kCoast);
 
     this.rightLeaderConfig
-    .inverted(false)
+    .inverted(true)
     .apply(global);
 
     this.rightFollowConfig
-    .inverted(true)
+    .inverted(false)
     .follow(rightLeader.getSpark())
-    .apply(global);
+    .apply(global); 
 
     this.leftLeaderConfig
-    .inverted(false)
+    .inverted(true)
     .apply(global);
 
     this.leftFollowConfig
-    .inverted(true)
+    .inverted(false)
     .follow(leftLeader.getSpark())
     .apply(global);
 
@@ -199,17 +199,25 @@ public class DriveBaseSubsystem extends SubsystemBase implements DriveBaseSubsys
 
       double[] ajustado = adjustVelocity(controller, doubleTranslation, doubleRotation);
       doubleTranslation = ajustado[0];
-      doubleRotation = ajustado[1] * -0.7;
+      doubleRotation = ajustado[1] * 0.7;
 
       doubleTranslation = smoothAcceleration(doubleTranslation);
 
-      driver.arcadeDrive(doubleTranslation, doubleRotation);
+      driver.arcadeDrive(doubleRotation, doubleTranslation);
     });
   }
 
   @Override
   public void stopMotor(){
     driver.stopMotor();
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Tank/Right Leader", rightLeader.get());
+    SmartDashboard.putNumber("Tank/Right Follow", rightFollow.get());
+    SmartDashboard.putNumber("Tank/Left Leader", leftLeader.get());
+    SmartDashboard.putNumber("Tank/Left Follow", leftFollow.get());
   }
 
 }

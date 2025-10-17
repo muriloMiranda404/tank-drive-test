@@ -284,7 +284,7 @@
               "data_type": "double",
               "start_angle": -140.0,
               "end_angle": 140.0,
-              "min_value": 30.0,
+              "min_value": 0.0,
               "max_value": 40.0,
               "number_of_labels": 8,
               "wrap_value": false,

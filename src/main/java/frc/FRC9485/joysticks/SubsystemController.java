@@ -10,6 +10,7 @@ public class SubsystemController implements SubsystemControllerIO{
     private static SubsystemController m_instance;
 
     private short A = 1;
+    private short B = 2;
     private short X = 3;
     private short leftBumper = 5;
     private short rightBumper = 6;
@@ -33,8 +34,13 @@ public class SubsystemController implements SubsystemControllerIO{
     }
 
     @Override
-    public Trigger getConveyorButton() {
+    public Trigger getConveyorWithNoPauseButton() {
         return controller.button(X);
+    }
+
+    @Override
+    public Trigger getConveyorWithPauseButton() {
+        return controller.button(B);
     }
 
     @Override

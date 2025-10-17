@@ -92,12 +92,8 @@ public class SparkMaxMotor extends SparkMaxMotorBase {
 
     @Override
     public void updateConfig(SparkMaxConfig config) {
-        if(DriverStation.isEnabled()){
-            throw new IllegalRobotState("The config cannot be changed while the robot is enabled");
-        }
-
-        this.config.apply(config);
-        configureSpark(() -> motor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters));
+        System.out.println("confiruando  o motor: " + this.name + this.id);
+        motor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     @Override
