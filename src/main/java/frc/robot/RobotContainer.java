@@ -58,7 +58,8 @@ public class RobotContainer {
   }
 
   public void configureConveyorBindings() {
-    subsystemController.getConveyorButton().whileTrue(new EnableConveyor(false));
+    subsystemController.getConveyorWithPauseButton().whileTrue(new EnableConveyor(true));
+    subsystemController.getConveyorWithNoPauseButton().whileTrue(new EnableConveyor(false));
   }
 
   public void configureIntakeBindings() {

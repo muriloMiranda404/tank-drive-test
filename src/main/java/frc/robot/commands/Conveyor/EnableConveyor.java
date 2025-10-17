@@ -27,7 +27,8 @@ public class EnableConveyor extends Command {
     @Override
     public boolean isFinished() {
         return 
-        !controller.getConveyorButton().getAsBoolean() &&
+        !controller.getConveyorWithPauseButton().getAsBoolean() &&
+        !controller.getConveyorWithNoPauseButton().getAsBoolean() &&
         !controller.getCatchBallButton().getAsBoolean()|| 
         (stop == true && conveyorSubsystem.getHasBall());
     }
