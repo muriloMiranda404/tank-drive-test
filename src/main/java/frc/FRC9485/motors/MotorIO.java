@@ -48,8 +48,10 @@ public interface MotorIO {
 
     boolean atSetpoint(double setpoint);
     
-    AbsoluteEncoder getAbsoluteEncoder(boolean usingAbsoluteEncoder);
+    AbsoluteEncoder getAbsoluteEncoder();
 
     RelativeEncoder getAlternativeEncoder(boolean usingRelativeEncoder);
+
+    RelativeEncoder getRelativeEncoder();
 
 }

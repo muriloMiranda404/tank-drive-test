@@ -58,7 +58,7 @@ public class DriveBaseSubsystem extends SubsystemBase implements DriveBaseSubsys
       "left-follow"
     );
 
-    this.rightLeader  = new SparkMaxMotor(
+    this.rightLeader = new SparkMaxMotor(
       DriveBase.RIGHT_MOTOR_LEADER_ID,
       SparkMax.MotorType.kBrushed,
       false,
@@ -79,14 +79,14 @@ public class DriveBaseSubsystem extends SubsystemBase implements DriveBaseSubsys
     this.leftFollowConfig = new SparkMaxConfig();
 
     this.global
-    .idleMode(IdleMode.kBrake);
+    .idleMode(IdleMode.kCoast);
 
     this.rightLeaderConfig
-    .inverted(true)
+    .inverted(false)
     .apply(global);
 
     this.rightFollowConfig
-    .inverted(false)
+    .inverted(true)
     .follow(rightLeader.getSpark())
     .apply(global);
 
@@ -105,7 +105,7 @@ public class DriveBaseSubsystem extends SubsystemBase implements DriveBaseSubsys
     this.leftFollow.updateConfig(leftFollowConfig);
     this.rightFollow.updateConfig(rightFollowConfig);
 
-    this.driver = new DifferentialDrive(rightLeader, leftLeader);
+    this.driver = new DifferentialDrive(leftLeader, rightLeader);
   }
 
   public static DriveBaseSubsystem getInstance() {
@@ -152,7 +152,7 @@ public class DriveBaseSubsystem extends SubsystemBase implements DriveBaseSubsys
     final int RAMPING_DOWN = 2;
 
     double RAMP_UP_CONSTANT = 0.2;
-    double RAMP_DOWN_CONSTANT = 0.5;
+    double RAMP_DOWN_CONSTANT = 0.2;
 
     //rate of change in joystick values.
     double delta = doubleTranslation - oldInput;

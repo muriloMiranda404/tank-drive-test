@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.FRC9485.joysticks.SubsystemController;
 import frc.robot.subsystems.mechanisms.PneumaticSubsystem;
 
-public class CloseIntake extends Command {
+public class OpenIntake extends Command {
     PneumaticSubsystem pneumaticSubsystem;
     SubsystemController subsystemController;
     
-    public CloseIntake() {
+    public OpenIntake() {
         this.subsystemController = SubsystemController.getInstance();
 
         this.pneumaticSubsystem = PneumaticSubsystem.getInstance();
@@ -20,12 +20,13 @@ public class CloseIntake extends Command {
     
     @Override
     public void execute() {
-        pneumaticSubsystem.closeSolenoid();
+        pneumaticSubsystem.openSolenoid();
     }
 
     @Override
     public boolean isFinished() {
         return
-        !pneumaticSubsystem.isFwdChannelDisabled();    
+        !pneumaticSubsystem.isRevChannelDisabled() || 
+        !subsystemController.getCatchBallButton().getAsBoolean();
     }
 }

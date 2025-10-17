@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class RackSubsystem extends SubsystemBase implements RackSubsystemIO {
     private static RackSubsystem m_instance;
 
+    // private SparkMaxMotor rackMotor;
     private SparkMaxMotor rackMotor;
 
     // Logging
@@ -27,13 +28,19 @@ public class RackSubsystem extends SubsystemBase implements RackSubsystemIO {
         SmartDashboard.putData("Rack/Subsystem", this);
         speedLogger = new CustomDoubleLog("Rack/Speed");
         encoderPositionLogger = new CustomDoubleLog("Rack/Encoder Position");
-
         this.rackMotor = new SparkMaxMotor(
             Rack.RACK_MOTOR_ID, 
             MotorType.kBrushless,
             true,
-            "rack"
+            "rack-motor"
         );
+
+        // this.rackMotor = new SparkMaxMotor(
+        //     Rack.RACK_MOTOR_ID, 
+        //     MotorType.kBrushless,
+        //     true,
+        //     "rack"
+        // );
     }
 
     public static RackSubsystem getInstance() {
@@ -45,7 +52,7 @@ public class RackSubsystem extends SubsystemBase implements RackSubsystemIO {
     } 
 
     public RelativeEncoder getEncoder() {
-        return this.rackMotor.getAlternativeEncoder(true);
+        return this.rackMotor.getRelativeEncoder();
     }
     
     public double getSpeed() {
@@ -71,11 +78,11 @@ public class RackSubsystem extends SubsystemBase implements RackSubsystemIO {
 
             if (position >= Rack.MAX_UP && doubleSpeed > 0.0) {
                 doubleSpeed = 0;
-            } else if (position <= Rack.MAX_DOWN && doubleSpeed < 0.0) {
+            } 
+            else if (position <= Rack.MAX_DOWN && doubleSpeed < 0.0) {
                 doubleSpeed = 0;
             }
-
-            this.rackMotor.set(speed.getAsDouble());
+            this.rackMotor.set(doubleSpeed);
         });
     }
 

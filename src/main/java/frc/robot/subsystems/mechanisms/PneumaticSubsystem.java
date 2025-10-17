@@ -57,8 +57,13 @@ public class PneumaticSubsystem extends SubsystemBase implements PneumaticsSubsy
     }
 
     @Override
-    public void toggleSolenoid() {
-        this.doubleSolenoid.toggle();
+    public void closeSolenoid() {
+        this.doubleSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+
+    @Override
+    public void openSolenoid() {
+        this.doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
     @Override

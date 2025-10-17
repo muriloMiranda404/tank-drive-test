@@ -76,11 +76,14 @@ public abstract class SparkMaxMotorBase implements MotorIO, MotorController {
     public abstract SparkMax getSpark();
     
     @Override
-    public abstract AbsoluteEncoder getAbsoluteEncoder(boolean usingAbsoluteEncoder);
+    public abstract AbsoluteEncoder getAbsoluteEncoder();
 
     @Override
     public abstract RelativeEncoder getAlternativeEncoder(boolean usingRelativeEncoder);
-    
+
+    @Override
+    public abstract RelativeEncoder getRelativeEncoder();
+
     @Override
     public boolean atSetpoint(double setpoint){
         return Math.abs(getPosition() - setpoint) <= 0.001;

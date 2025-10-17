@@ -187,19 +187,19 @@ public class SparkMaxMotor extends SparkMaxMotorBase {
     }
 
     @Override
-    public AbsoluteEncoder getAbsoluteEncoder(boolean usingAbsoluteEncoder) {
-       if(usingAbsoluteEncoder){
+    public AbsoluteEncoder getAbsoluteEncoder() {
         return motor.getAbsoluteEncoder();
-       } else{
-       return null;
-        }
+    }
+
+    public RelativeEncoder getRelativeEncoder() {
+        return motor.getEncoder();
     }
 
     @Override
     public RelativeEncoder getAlternativeEncoder(boolean usingRelativeEncoder) {
         if(usingRelativeEncoder){
             return motor.getAlternateEncoder();
-        } else{
+        } else {
         return null;
     }
     }

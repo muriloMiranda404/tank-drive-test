@@ -21,7 +21,7 @@ public final class Constants {
   }
 
   public static final class Rack {
-    public static final double MAX_UP = 118.0;
+    public static final double MAX_UP = 140.0;
     public static final double MAX_DOWN = 1.0;
     public static final int RACK_MOTOR_ID = 5;
   }
@@ -41,7 +41,7 @@ public final class Constants {
   }
 
   public static final class Conveyor {
-    public static final double MAX_SPEED = 7;
+    public static final double MAX_SPEED = -7;
     public static final int CONVEYOR_MOTOR_ID = 7;
     public static final int OPTICAL_SENSOR_ID = 1;
   }  

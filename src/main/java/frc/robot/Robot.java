@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.mechanisms.RackSubsystem;
 
 public class Robot extends TimedRobot{
-  RobotContainer m_robotContainer;
   Command m_autonomousCommand;
+  RobotContainer m_robotContainer;
 
   @Override
   public void robotInit() {
     System.out.println("robo ligado!");
-  WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
+    WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
     m_robotContainer = new RobotContainer();
   }
 

@@ -1,10 +1,9 @@
 package frc.robot.subsystems;
 
-import frc.robot.commands.Intake.ToggleIntake;
 import frc.robot.subsystems.IO.SuperStructureIO;
 import frc.robot.commands.Conveyor.EnableConveyor;
 import frc.robot.commands.Intake.EnableIntakeMotor;
-
+import frc.robot.commands.Intake.OpenIntake;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,7 +24,7 @@ public class SuperStructure extends SubsystemBase implements SuperStructureIO {
     @Override
     public SequentialCommandGroup catchBall() {
         return new SequentialCommandGroup(
-            new ToggleIntake(),
+            new OpenIntake(),
             new ParallelCommandGroup(
                 new EnableIntakeMotor(),
                 new EnableConveyor(true)
