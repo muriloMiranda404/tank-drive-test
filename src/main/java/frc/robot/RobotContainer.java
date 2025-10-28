@@ -1,16 +1,18 @@
 package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
-
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.FRC9485.joysticks.DriverController;
 import frc.FRC9485.joysticks.SubsystemController;
 
 import frc.robot.commands.Intake.CloseIntake;
-import frc.robot.commands.Conveyor.EnableConveyor;
+import frc.robot.commands.Conveyor.EnableConveyorMotor;
 import frc.robot.commands.Intake.EnableIntakeMotor;
+import frc.robot.commands.Intake.OpenIntakeWithVision;
 import frc.robot.commands.Shooter.EnableShooter;
 import frc.robot.subsystems.SuperStructure;
 import frc.robot.subsystems.DriveBaseSubsystem;
+import frc.robot.subsystems.mechanisms.PneumaticSubsystem;
 import frc.robot.subsystems.mechanisms.RackSubsystem;
 import frc.robot.subsystems.vision.RaspberrySubsystem;
 
@@ -24,14 +26,15 @@ public class RobotContainer {
   RackSubsystem rackSubsystem;
   SuperStructure superStructure;
   DriveBaseSubsystem driveBaseSubsystem;
+  PneumaticSubsystem pneumaticSubsystem;
   RaspberrySubsystem raspberrySubsystem;
 
   public RobotContainer() {
     rackSubsystem = RackSubsystem.getInstance();
     superStructure = SuperStructure.getInstance();
+    pneumaticSubsystem = PneumaticSubsystem.getInstance();
     driveBaseSubsystem = DriveBaseSubsystem.getInstance();
-    raspberrySubsystem = RaspberrySubsystem.getInstance("raspberry");
-
+    raspberrySubsystem = RaspberrySubsystem.getInstance("raspberry-frc9485");
     driveBaseSubsystem.setDefaultCommand(
       driveBaseSubsystem.driveTank(
           driverController,
@@ -47,10 +50,14 @@ public class RobotContainer {
       )
     );
 
-
     configureIntakeBindings();
     configureShooterBindings();
     configureConveyorBindings();
+
+    new Trigger(() -> raspberrySubsystem.getTV() &&
+      subsystemController.getCatchBallAndAdjustTranslationButton().getAsBoolean()
+    ).whileTrue(new OpenIntakeWithVision());
+    // new Trigger(() -> raspberrySubsystem.getTV()).whileFalse(new CloseIntakeWithVision());
   }
 
   public void configureShooterBindings() {
@@ -58,8 +65,8 @@ public class RobotContainer {
   }
 
   public void configureConveyorBindings() {
-    subsystemController.getConveyorWithPauseButton().whileTrue(new EnableConveyor(true));
-    subsystemController.getConveyorWithNoPauseButton().whileTrue(new EnableConveyor(false));
+    subsystemController.getConveyorWithPauseButton().whileTrue(new EnableConveyorMotor(true));
+    subsystemController.getConveyorWithNoPauseButton().whileTrue(new EnableConveyorMotor(false));
   }
 
   public void configureIntakeBindings() {

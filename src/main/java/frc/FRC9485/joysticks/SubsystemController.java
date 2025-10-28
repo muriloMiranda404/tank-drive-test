@@ -12,6 +12,7 @@ public class SubsystemController implements SubsystemControllerIO{
     private short A = 1;
     private short B = 2;
     private short X = 3;
+    private short Y = 4;
     private short leftBumper = 5;
     private short rightBumper = 6;
 
@@ -56,6 +57,11 @@ public class SubsystemController implements SubsystemControllerIO{
     @Override
     public double getRackSpeed() {
         return controller.getRightY() * -0.1;
+    }
+
+    @Override
+    public Trigger getCatchBallAndAdjustTranslationButton() {
+        return controller.button(Y);
     }
 
     @Override

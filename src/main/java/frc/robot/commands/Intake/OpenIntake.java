@@ -11,7 +11,6 @@ public class OpenIntake extends Command {
     
     public OpenIntake() {
         this.subsystemController = SubsystemController.getInstance();
-
         this.pneumaticSubsystem = PneumaticSubsystem.getInstance();
     }
 
@@ -20,6 +19,7 @@ public class OpenIntake extends Command {
     
     @Override
     public void execute() {
+        System.out.println("abrindo intake");
         pneumaticSubsystem.openSolenoid();
     }
 

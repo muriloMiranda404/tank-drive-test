@@ -13,7 +13,7 @@ public class RaspberrySubsystem extends SubsystemBase implements RaspberrySubsys
     private static RaspberrySubsystem m_instance;
     
     // NetworkTables config
-    private NetworkTable visionTable;
+    private NetworkTable locationsTable;
     private NetworkTable configTable;
     private NetworkTable raspberryTable;
     private NetworkTable detectionsTable;
@@ -34,7 +34,7 @@ public class RaspberrySubsystem extends SubsystemBase implements RaspberrySubsys
 
         this.raspberryTable = NetworkTableInstance.getDefault().getTable(raspberryTablePath);
         this.detectionsTable = raspberryTable.getSubTable("detections");
-        this.visionTable = detectionsTable.getSubTable("vision");
+        this.locationsTable = detectionsTable.getSubTable("locations");
         this.configTable = detectionsTable.getSubTable("config");
     }
 
@@ -47,22 +47,22 @@ public class RaspberrySubsystem extends SubsystemBase implements RaspberrySubsys
 
     @Override
     public String getClsName() {
-        return this.visionTable.getEntry("cls_name").getString("");
+        return this.locationsTable.getEntry("cls_name").getString("");
     }
 
     @Override
     public boolean getTV() {
-        return this.visionTable.getEntry("tv").getBoolean(false);
+        return this.locationsTable.getEntry("tv").getBoolean(false);
     }
 
     @Override
     public double getTX() {
-        return this.visionTable.getEntry("tx").getDouble(0);
+        return this.locationsTable.getEntry("tx").getDouble(0);
     }
 
     @Override
     public double getTY() {
-        return this.visionTable.getEntry("ty").getDouble(0);
+        return this.locationsTable.getEntry("ty").getDouble(0);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package frc.FRC9485.joysticks;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Controllers;
 import frc.FRC9485.joysticks.IO.DriverControllerIO;
 
@@ -37,5 +38,10 @@ public class DriverController implements DriverControllerIO{
     @Override
     public boolean getFastGear() {
         return this.controller.rightBumper().getAsBoolean();
+    }
+
+    @Override
+    public Trigger getTeste() {
+        return this.controller.a();
     }
 }

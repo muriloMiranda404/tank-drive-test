@@ -95,4 +95,21 @@ public class PneumaticSubsystem extends SubsystemBase implements PneumaticsSubsy
         fwdChannelEnabledLogger.append(isFwdChannelDisabled());
         currentChannelEnabledLogger.append(getChannelEnabled());
     }
+
+    // @Override
+    // public SequentialCommandGroup openIntakeWithVision() {
+    //     if (raspberrySubsystem.getTV()) {
+    //         return new SequentialCommandGroup(
+    //             new OpenIntake(),
+    //             new EnableIntakeMotor(),
+    //             new EnableConveyorMotor(true)
+    //         );
+    //     } else {
+    //         return new SequentialCommandGroup(
+    //             new CloseIntake(),
+    //             new StopIntakeMotor(),
+    //             new StopConveyorMotor()
+    //         );
+    //     }
+    // }
 }

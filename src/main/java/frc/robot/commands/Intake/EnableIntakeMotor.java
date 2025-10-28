@@ -23,6 +23,7 @@ public class EnableIntakeMotor extends Command{
 
     @Override
     public void execute() {
+        System.out.println("intake");
         this.intakeSubsystem.setSpeed(Intake.MAX_SPEED);
     }
 
