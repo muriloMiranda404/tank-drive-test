@@ -8,6 +8,8 @@ import frc.FRC9485.joysticks.IO.DriverControllerIO;
 public class DriverController implements DriverControllerIO{
     private static DriverController m_instance;
     private CommandXboxController controller;
+
+    private short Y = 4;
     
     private DriverController() {
         this.controller = new CommandXboxController(Controllers.DRIVER_CONTROLLER);
@@ -41,7 +43,7 @@ public class DriverController implements DriverControllerIO{
     }
 
     @Override
-    public Trigger getTeste() {
-        return this.controller.a();
+    public Trigger getCatchBallAndAdjustTranslationButton() {
+        return controller.button(Y);
     }
 }

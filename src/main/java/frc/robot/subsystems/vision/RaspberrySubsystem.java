@@ -45,6 +45,10 @@ public class RaspberrySubsystem extends SubsystemBase implements RaspberrySubsys
         return m_instance;
     }
 
+    public static RaspberrySubsystem getInstance() {
+        return m_instance;
+    }
+
     @Override
     public String getClsName() {
         return this.locationsTable.getEntry("cls_name").getString("");

@@ -5,6 +5,6 @@ public interface PneumaticsSubsystemIO {
     public void closeSolenoid();
     public double getPressure();
     public String getChannelEnabled();
-    public boolean isFwdChannelDisabled();
-    public boolean isRevChannelDisabled();
+    public boolean isFwdChannelEnabled();
+    public boolean isRevChannelEnabled();
 }

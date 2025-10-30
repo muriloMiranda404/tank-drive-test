@@ -19,14 +19,11 @@ public class OpenIntake extends Command {
     
     @Override
     public void execute() {
-        System.out.println("abrindo intake");
         pneumaticSubsystem.openSolenoid();
     }
 
     @Override
     public boolean isFinished() {
-        return
-        !pneumaticSubsystem.isRevChannelDisabled() || 
-        !subsystemController.getCatchBallButton().getAsBoolean();
+        return pneumaticSubsystem.isRevChannelEnabled();
     }
 }

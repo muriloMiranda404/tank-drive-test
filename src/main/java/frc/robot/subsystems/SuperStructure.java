@@ -4,6 +4,7 @@ import frc.robot.subsystems.IO.SuperStructureIO;
 import frc.robot.commands.Conveyor.EnableConveyorMotor;
 import frc.robot.commands.Intake.EnableIntakeMotor;
 import frc.robot.commands.Intake.OpenIntake;
+import frc.robot.commands.DriveUtils.AdjustRotationWithVision;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -18,7 +19,6 @@ public class SuperStructure extends SubsystemBase implements SuperStructureIO {
         if (m_instance == null) {
             m_instance = new SuperStructure(); 
         }
-
         return m_instance;
     }
 
@@ -33,16 +33,11 @@ public class SuperStructure extends SubsystemBase implements SuperStructureIO {
         );
     }
 
-    // @Override
-    // public SequentialCommandGroup stopCatchingBall() {
-    //     System.out.println("nao pegando");
-    //     return new SequentialCommandGroup(
-    //         new CloseIntake(),
-    //         new ParallelCommandGroup(
-    //             new StopIntakeMotor(),
-    //             new StopConveyorMotor()
-    //         )
-    //     );
-    // }
-
+    @Override
+    public ParallelCommandGroup catchBallWithVision() {
+        return new ParallelCommandGroup(
+            catchBall(),
+            new AdjustRotationWithVision()
+        );
+    }
 } 

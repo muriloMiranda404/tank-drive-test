@@ -43,7 +43,6 @@ public class PneumaticSubsystem extends SubsystemBase implements PneumaticsSubsy
             Pneumatics.DOUBLE_SOLENOID_FORWARD_CHANNEL, 
             Pneumatics.DOUBLE_SOLENOID_REVERSE_CHANNEL
         );
-
     }
 
     public static PneumaticSubsystem getInstance() {
@@ -73,26 +72,27 @@ public class PneumaticSubsystem extends SubsystemBase implements PneumaticsSubsy
 
     @Override
     public String getChannelEnabled() {
-        if (!this.doubleSolenoid.isFwdSolenoidDisabled()) { return "fwd"; }
-        return "rev";
+        if (doubleSolenoid.get() == DoubleSolenoid.Value.kForward) { return "fwd"; }
+        else if (doubleSolenoid.get() == DoubleSolenoid.Value.kReverse) { return "rev"; }
+        return "off";
     }
 
     @Override
-    public boolean isFwdChannelDisabled() {
-        return this.doubleSolenoid.isFwdSolenoidDisabled();
+    public boolean isFwdChannelEnabled() {
+        return doubleSolenoid.get() == DoubleSolenoid.Value.kForward;
     }
 
     @Override
-    public boolean isRevChannelDisabled() {
-        return this.doubleSolenoid.isRevSolenoidDisabled();
+    public boolean isRevChannelEnabled() {
+        return doubleSolenoid.get() == DoubleSolenoid.Value.kReverse;
     }
     
     @Override
     public void periodic() {
         pneumaticHub.enableCompressorAnalog(min, max);
         currentPressureLogger.append(getPressure());
-        revChannelEnabledLogger.append(!isRevChannelDisabled());
-        fwdChannelEnabledLogger.append(!isFwdChannelDisabled());
+        revChannelEnabledLogger.append(isRevChannelEnabled());
+        fwdChannelEnabledLogger.append(isFwdChannelEnabled());
         currentChannelEnabledLogger.append(getChannelEnabled());
     }
 

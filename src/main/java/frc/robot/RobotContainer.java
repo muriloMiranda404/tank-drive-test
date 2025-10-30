@@ -8,7 +8,6 @@ import frc.FRC9485.joysticks.SubsystemController;
 import frc.robot.commands.Intake.CloseIntake;
 import frc.robot.commands.Conveyor.EnableConveyorMotor;
 import frc.robot.commands.Intake.EnableIntakeMotor;
-import frc.robot.commands.Intake.OpenIntakeWithVision;
 import frc.robot.commands.Shooter.EnableShooter;
 import frc.robot.subsystems.SuperStructure;
 import frc.robot.subsystems.DriveBaseSubsystem;
@@ -35,9 +34,9 @@ public class RobotContainer {
     pneumaticSubsystem = PneumaticSubsystem.getInstance();
     driveBaseSubsystem = DriveBaseSubsystem.getInstance();
     raspberrySubsystem = RaspberrySubsystem.getInstance("raspberry-frc9485");
+    
     driveBaseSubsystem.setDefaultCommand(
       driveBaseSubsystem.driveTank(
-          driverController,
           () -> MathUtil.applyDeadband(driverController.getTranslationAxis(), 0),
           () -> MathUtil.applyDeadband(driverController.getRotationAxis(), 0)
 
@@ -50,13 +49,16 @@ public class RobotContainer {
       )
     );
 
+    new Trigger(() -> raspberrySubsystem.getTV() &&
+      (subsystemController.getCatchBallAndAdjustTranslationButton().getAsBoolean() ||
+      driverController.getCatchBallAndAdjustTranslationButton().getAsBoolean())
+    )
+    .whileTrue(superStructure.catchBallWithVision())
+    .whileFalse(new CloseIntake());
+
     configureIntakeBindings();
     configureShooterBindings();
     configureConveyorBindings();
-
-    new Trigger(() -> raspberrySubsystem.getTV() &&
-      subsystemController.getCatchBallAndAdjustTranslationButton().getAsBoolean()
-    ).whileTrue(new OpenIntakeWithVision());
   }
 
   public void configureShooterBindings() {

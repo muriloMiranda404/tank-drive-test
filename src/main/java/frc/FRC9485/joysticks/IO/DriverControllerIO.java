@@ -9,5 +9,5 @@ public interface DriverControllerIO {
     boolean getSlowGear();
     boolean getFastGear();
 
-    Trigger getTeste();
+    public Trigger getCatchBallAndAdjustTranslationButton();
 }

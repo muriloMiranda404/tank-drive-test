@@ -1,8 +1,9 @@
 package frc.robot.subsystems.IO;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public interface SuperStructureIO {
     public SequentialCommandGroup catchBall();
-    // public SequentialCommandGroup stopCatchingBall();
+    public ParallelCommandGroup catchBallWithVision();
 }

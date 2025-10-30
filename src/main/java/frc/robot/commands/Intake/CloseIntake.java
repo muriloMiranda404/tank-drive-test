@@ -26,6 +26,6 @@ public class CloseIntake extends Command {
     @Override
     public boolean isFinished() {
         return
-        !pneumaticSubsystem.isFwdChannelDisabled();    
+        pneumaticSubsystem.isFwdChannelEnabled();    
     }
 }
