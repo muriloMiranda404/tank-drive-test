@@ -91,8 +91,8 @@ public class PneumaticSubsystem extends SubsystemBase implements PneumaticsSubsy
     public void periodic() {
         pneumaticHub.enableCompressorAnalog(min, max);
         currentPressureLogger.append(getPressure());
-        revChannelEnabledLogger.append(isRevChannelDisabled());
-        fwdChannelEnabledLogger.append(isFwdChannelDisabled());
+        revChannelEnabledLogger.append(!isRevChannelDisabled());
+        fwdChannelEnabledLogger.append(!isFwdChannelDisabled());
         currentChannelEnabledLogger.append(getChannelEnabled());
     }
 

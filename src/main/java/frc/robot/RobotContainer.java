@@ -57,7 +57,6 @@ public class RobotContainer {
     new Trigger(() -> raspberrySubsystem.getTV() &&
       subsystemController.getCatchBallAndAdjustTranslationButton().getAsBoolean()
     ).whileTrue(new OpenIntakeWithVision());
-    // new Trigger(() -> raspberrySubsystem.getTV()).whileFalse(new CloseIntakeWithVision());
   }
 
   public void configureShooterBindings() {
