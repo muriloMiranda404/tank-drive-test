@@ -39,7 +39,6 @@ public class RobotContainer {
       driveBaseSubsystem.driveTank(
           () -> MathUtil.applyDeadband(driverController.getTranslationAxis(), 0),
           () -> MathUtil.applyDeadband(driverController.getRotationAxis(), 0)
-
         )
     );
 
@@ -49,9 +48,8 @@ public class RobotContainer {
       )
     );
 
-    new Trigger(() -> raspberrySubsystem.getTV() &&
-      (subsystemController.getCatchBallAndAdjustTranslationButton().getAsBoolean() ||
-      driverController.getCatchBallAndAdjustTranslationButton().getAsBoolean())
+    new Trigger(() -> subsystemController.getCatchBallAndAdjustTranslationButton().getAsBoolean() ||
+      driverController.getCatchBallAndAdjustTranslationButton().getAsBoolean()
     )
     .whileTrue(superStructure.catchBallWithVision())
     .whileFalse(new CloseIntake());

@@ -123,16 +123,18 @@ public class DriveBaseSubsystem extends SubsystemBase implements DriveBaseSubsys
     return m_instance;
   }
 
-  private double[] adjustVelocity(double translation, double rotation) {
-    // Marcha
-    if (driverController.getSlowGear()) {
-      translation *= 0.5;
-    } else if (driverController.getFastGear()) {
-      translation *= 1.0;
-    } else if (driverController.getSlowGear() && driverController.getFastGear()) {
-      translation *= 0.7;
-    } else {
-      translation *= 0.7;
+  private double[] adjustVelocity(double translation, double rotation, boolean useJoystickGear) {
+    if (useJoystickGear) {
+      // Marcha
+      if (driverController.getSlowGear()) {
+        translation *= 0.5;
+      } else if (driverController.getFastGear()) {
+        translation *= 1.0;
+      } else if (driverController.getSlowGear() && driverController.getFastGear()) {
+        translation *= 0.7;
+      } else {
+        translation *= 0.7;
+      }
     }
     
     // Aliança
@@ -152,68 +154,75 @@ public class DriveBaseSubsystem extends SubsystemBase implements DriveBaseSubsys
     return ajustado;
   }
 
-  private double smoothAcceleration(double doubleTranslation) {
-    int mode = 0;
-    final int NORMAL = 1;
-    final int RAMPING_UP = 0;
-    final int RAMPING_DOWN = 2;
-    double capture_value = 0, output = 0, oldInput = 0;
+// private double smoothAcceleration(double doubleTranslation) {
+//   int mode = 0;
+//   final int NORMAL = 1;
+//   final int RAMPING_UP = 0;
+//   final int RAMPING_DOWN = 2;
+//   double capture_value = 0, output = 0, oldInput = 0;
 
-    double RAMP_UP_CONSTANT = 0.2;
-    double RAMP_DOWN_CONSTANT = 0.2;
+//   double RAMP_UP_CONSTANT = 0.2;
+//   double RAMP_DOWN_CONSTANT = 0.2;
 
-    //rate of change in joystick values.
-    double delta = doubleTranslation - oldInput;
-    double DELTA_LIMIT = 0.5;
+//   //rate of change in joystick values.
+//   double delta = doubleTranslation - oldInput;
+//   double DELTA_LIMIT = 0.5;
 
-    //is joystick being moved too fast?
-    if(delta >= DELTA_LIMIT) { 
-      mode=RAMPING_UP; 
-      capture_value = doubleTranslation;
-    }else if(delta <= DELTA_LIMIT) { 
-      mode=RAMPING_DOWN; 
-      capture_value = doubleTranslation;
-    } 
+//   //is joystick being moved too fast?
+//   if(delta >= DELTA_LIMIT) { 
+//     mode=RAMPING_UP; 
+//     capture_value = doubleTranslation;
+//   }else if(delta <= DELTA_LIMIT) { 
+//     mode=RAMPING_DOWN; 
+//     capture_value = doubleTranslation;
+//   } 
 
-    //output integration
-    switch(mode){
-      case RAMPING_UP: 
-        output += RAMP_UP_CONSTANT;
-        if(output >= capture_value) { mode = NORMAL; }
-        break;
-        
-      case RAMPING_DOWN:
-        output -= RAMP_DOWN_CONSTANT;
-        if(output <= capture_value) { mode = NORMAL; }
-        break;
-        
-      case NORMAL:
-        output = doubleTranslation;
-        break;
-      default: break;
-    }
+//   //output integration
+//   switch(mode){
+//     case RAMPING_UP: 
+//       output += RAMP_UP_CONSTANT;
+//       if(output >= capture_value) { mode = NORMAL; }
+//       break;
+      
+//     case RAMPING_DOWN:
+//       output -= RAMP_DOWN_CONSTANT;
+//       if(output <= capture_value) { mode = NORMAL; }
+//       break;
+      
+//     case NORMAL:
+//       output = doubleTranslation;
+//       break;
+//     default: break;
+//   }
 
-    //Keep values for next loop
-    oldInput = doubleTranslation;
+//   //Keep values for next loop
+//   oldInput = doubleTranslation;
 
-    return doubleTranslation;
-  }
+//   return doubleTranslation;
+// }
 
   @Override
   public Command driveTank(DoubleSupplier translation, DoubleSupplier rotation) {    
     return run(() -> {
-
       double doubleTranslation = translation.getAsDouble();
       double doubleRotation = rotation.getAsDouble();
 
-      double[] ajustado = adjustVelocity(doubleTranslation, doubleRotation);
+      double[] ajustado = adjustVelocity(doubleTranslation, doubleRotation, true);
       doubleTranslation = ajustado[0];
       doubleRotation = ajustado[1] * 0.7;
 
-      doubleTranslation = smoothAcceleration(doubleTranslation);
-
       driver.arcadeDrive(doubleRotation, doubleTranslation);
     });
+  }
+
+  public void drive(double translation, double rotation) {
+    double[] ajustado = adjustVelocity(translation, rotation, false);
+    driver.tankDrive(ajustado[0], ajustado[1]);
+  }
+
+  public double getSpeed() {
+    double speeds = leftLeader.get() + leftFollow.get() + rightLeader.get() + rightFollow.get();
+    return speeds / 4.0;
   }
 
   @Override
