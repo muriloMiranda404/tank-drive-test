@@ -61,7 +61,7 @@ public class RaspberrySubsystem extends SubsystemBase implements RaspberrySubsys
 
     @Override
     public double getTX() {
-        return this.locationsTable.getEntry("tx").getDouble(0);
+        return this.locationsTable.getEntry("tx").getDouble(0) - 8;
     }
 
     @Override
