@@ -36,7 +36,7 @@ public class SuperStructure extends SubsystemBase implements SuperStructureIO {
     @Override
     public ParallelCommandGroup catchBallWithVision() {
         return new ParallelCommandGroup(
-            // catchBall(),
+            catchBall(),
             new AdjustRotationWithVision()
         );
     }

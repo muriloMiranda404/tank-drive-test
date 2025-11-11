@@ -53,20 +53,20 @@ public class RaspberrySubsystem extends SubsystemBase implements RaspberrySubsys
     public String getClsName() {
         return this.locationsTable.getEntry("cls_name").getString("");
     }
-
-    @Override
-    public boolean getTV() {
-        return this.locationsTable.getEntry("tv").getBoolean(false);
-    }
-
-    @Override
+    
+        @Override
     public double getTX() {
-        return this.locationsTable.getEntry("tx").getDouble(0) - 8;
+        return this.locationsTable.getEntry("tx").getDouble(0) - 8.0;
     }
 
     @Override
     public double getTY() {
         return this.locationsTable.getEntry("ty").getDouble(0);
+    }
+
+    @Override
+    public boolean getTV() {
+        return this.locationsTable.getEntry("tv").getBoolean(false);
     }
 
     @Override

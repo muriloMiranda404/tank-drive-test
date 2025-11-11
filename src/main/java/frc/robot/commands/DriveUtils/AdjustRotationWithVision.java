@@ -1,10 +1,9 @@
 package frc.robot.commands.DriveUtils;
 
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.FRC9485.utils.Util;
+import frc.FRC9485.utils.logger.CustomBooleanLog;
 import frc.FRC9485.utils.logger.CustomDoubleLog;
 import frc.robot.subsystems.DriveBaseSubsystem;
 import frc.robot.subsystems.vision.RaspberrySubsystem;
@@ -14,107 +13,78 @@ public class AdjustRotationWithVision extends Command {
     private RaspberrySubsystem raspberrySubsystem;
 
     private double tx;
-    private boolean txIsNegative;
+    private double rotationSpeed;
 
-    private double rotation;
-    private double lastLoopTime;
-    private double currentLoopTime;
+    private boolean safeExit;
+    private boolean startPredicting;
 
     private final Timer timer;
-
-    private final double kP = 0.01;
-    private final double kI = 0.0;
-    private final double kD = 0.0;
     
-    private final double SETPOINT = 3;
-    private final double PID_LOOP_PERIOD = 3;
+    private final double SETPOINT = 0;
+    private final double LOOP_TIME = 1;
     
-    private final PIDController pidController;
+    private final double MAX_LOOP_TIME = 3;
+    private final double TX_PER_SECOND = 6.65;
+    private final double ERROR_TOLERANCE = 2.0;
 
-    private final double LOOP_TIME = 0.5;
-    private final double CENTER_TX = 8.0;
-    private final double ERROR_TOLERANCE = 0.2;
-    // private final double MAX_TOLERANCE = 8.2;
-    // private final double MIN_TOLERANCE = 8.4;
-
-    private final CustomDoubleLog startTX;
-    private final CustomDoubleLog difrenceLogger;
-    private final CustomDoubleLog lastTimeLogger;
-    private final CustomDoubleLog currentTimeLogger;
+    private final CustomDoubleLog txLogger;
+    private final CustomBooleanLog safeExitLogger;
+    private final CustomDoubleLog rotationSpeedLogger;
+    private final CustomBooleanLog startPredictingLogger;
 
     public AdjustRotationWithVision() {
         timer = new Timer();
         driveBase = DriveBaseSubsystem.getInstance();
         raspberrySubsystem = RaspberrySubsystem.getInstance();
-        pidController = new PIDController(kP, kI, kD, PID_LOOP_PERIOD);
-        
-        startTX = new CustomDoubleLog("Vision/Start TX");
-        lastTimeLogger = new CustomDoubleLog("Vision/Last Time");
-        currentTimeLogger = new CustomDoubleLog("Vision/Current Time");
-        difrenceLogger = new CustomDoubleLog("Vision/Difference Timer Logger");
+
+        txLogger = new CustomDoubleLog("Vision/TX");
+        safeExitLogger = new CustomBooleanLog("Vision/Safe Exit");
+        rotationSpeedLogger = new CustomDoubleLog("Vision/Rotation Speed");
+        startPredictingLogger = new CustomBooleanLog("Vision/Start Predicting");
     }
 
     @Override
     public void initialize() {
-        pidController.reset();
-        pidController.setSetpoint(SETPOINT);
-        pidController.setTolerance(ERROR_TOLERANCE);
+        tx = 0;
+        rotationSpeed = 0.45;
 
-    //     timer.start();
-    //     timer.reset();
-    //     lastLoopTime = timer.get();
+        safeExit = false;
+        startPredicting = false;
 
-    //     tx = raspberrySubsystem.getTX();
-    //     txIsNegative = tx <= CENTER_TX ? true : false;
-
-    //     System.out.println("TX Atual: " + tx);
-    //     System.out.println("TX Negativo: " + txIsNegative);
-
-    //     rotation = 0;
-
-    //     // if (tx == 0) {
-    //     //     rotation = 0;
-    //     // } else {
-    //     // if (txIsNegative) {
-    //     //     rotation = 0.4;
-    //     // } else {
-    //     //     rotation = -0.4;
-    //     // }
-    // // }
+        timer.reset();
+        timer.start();
     }
 
     @Override
     public void execute() {
-        tx = raspberrySubsystem.getTX();
-        pidController.calculate(tx);
+        safeExit = timer.hasElapsed(MAX_LOOP_TIME);
+        startPredicting = timer.hasElapsed(LOOP_TIME);
 
-        driveBase.drive(0, rotation);
+        tx = startPredicting ? Math.round(raspberrySubsystem.getTX() + TX_PER_SECOND)
+        : raspberrySubsystem.getTX();
 
-        // currentLoopTime = timer.get();
+        rotationSpeed = tx > 0 ? 0.4 : -0.4;
 
-        // lastTimeLogger.append(lastLoopTime);
-        // currentTimeLogger.append(currentLoopTime);
-        // difrenceLogger.append(currentLoopTime - lastLoopTime);
+        System.out.println(SETPOINT - ERROR_TOLERANCE);
+        System.out.println(SETPOINT + ERROR_TOLERANCE);
 
-        // if (currentLoopTime < LOOP_TIME) {
-        //     lastLoopTime = currentLoopTime;
+        if (Util.inRange(tx, SETPOINT - ERROR_TOLERANCE, SETPOINT + ERROR_TOLERANCE)) {
+            System.out.println("Ta no setpoint");
+            rotationSpeed = 0;
+            this.cancel();
+        }
 
-        //     tx = raspberrySubsystem.getTX();
-        //     txIsNegative = tx <= CENTER_TX ? true : false;
-        //     startTX.append(tx);
+        txLogger.append(tx);
+        safeExitLogger.append(safeExit);
+        rotationSpeedLogger.append(rotationSpeed);
+        startPredictingLogger.append(startPredicting);
 
-        //     System.out.println("TX Atual: " + tx);
-        //     System.out.println("TX Negativo: " + txIsNegative);
-            
-        //     if (tx == 0) {
-        //         rotation = 0;
-        //     } else {
-        //         if (txIsNegative) {
-        //             rotation = 0.5;
-        //         } else {
-        //             rotation = -0.5;
-        //         }
-        //     }
+        driveBase.drive(0, -rotationSpeed);
+
+        // if (!timer.hasElapsed(LOOP_TIME)) {
+        //     rotation = 0.45;
+
+        //     System.out.println("Rotation: " + rotation);
         // } else {
         //     rotation = 0;
         // }
@@ -124,10 +94,17 @@ public class AdjustRotationWithVision extends Command {
 
     @Override
     public boolean isFinished() {
+        if (safeExit) {
+            System.out.println("=-=-=-=-=-=");
+            System.out.println("SAFE EXIT!!");
+            System.out.println("SAFE EXIT!!");
+            System.out.println("SAFE EXIT!!");
+            System.out.println("SAFE EXIT!!");
+            System.out.println("SAFE EXIT!!");
+            System.out.println("=-=-=-=-=-=");
+        }
         return !raspberrySubsystem.getTV() ||
-        pidController.atSetpoint();
-        // return !raspberrySubsystem.getTV() ||
-        // Util.inRange(tx, MIN_TOLERANCE, MAX_TOLERANCE);
+        safeExit;
     }
 
     @Override
