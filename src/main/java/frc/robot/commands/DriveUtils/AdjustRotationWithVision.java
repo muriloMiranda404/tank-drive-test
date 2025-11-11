@@ -15,20 +15,21 @@ public class AdjustRotationWithVision extends Command {
     private double tx;
     private double rotationSpeed;
 
-    private boolean safeExit;
+    private boolean excededMaxLoopTime;
     private boolean startPredicting;
 
     private final Timer timer;
     
     private final double SETPOINT = 0;
-    private final double LOOP_TIME = 1;
+    private final double LOOP_TIME = 0.53;
+    // 0.5297117449347027
     
-    private final double MAX_LOOP_TIME = 3;
+    private final double MAX_LOOP_TIME = 2.0;
     private final double TX_PER_SECOND = 6.65;
-    private final double ERROR_TOLERANCE = 2.0;
+    private final double ERROR_TOLERANCE = 2.1;
 
     private final CustomDoubleLog txLogger;
-    private final CustomBooleanLog safeExitLogger;
+    private final CustomBooleanLog excededMaxLoopTimeLogger;
     private final CustomDoubleLog rotationSpeedLogger;
     private final CustomBooleanLog startPredictingLogger;
 
@@ -38,7 +39,7 @@ public class AdjustRotationWithVision extends Command {
         raspberrySubsystem = RaspberrySubsystem.getInstance();
 
         txLogger = new CustomDoubleLog("Vision/TX");
-        safeExitLogger = new CustomBooleanLog("Vision/Safe Exit");
+        excededMaxLoopTimeLogger = new CustomBooleanLog("Vision/Safe Exit");
         rotationSpeedLogger = new CustomDoubleLog("Vision/Rotation Speed");
         startPredictingLogger = new CustomBooleanLog("Vision/Start Predicting");
     }
@@ -48,7 +49,7 @@ public class AdjustRotationWithVision extends Command {
         tx = 0;
         rotationSpeed = 0.45;
 
-        safeExit = false;
+        excededMaxLoopTime = false;
         startPredicting = false;
 
         timer.reset();
@@ -57,16 +58,13 @@ public class AdjustRotationWithVision extends Command {
 
     @Override
     public void execute() {
-        safeExit = timer.hasElapsed(MAX_LOOP_TIME);
         startPredicting = timer.hasElapsed(LOOP_TIME);
+        excededMaxLoopTime = timer.hasElapsed(MAX_LOOP_TIME);
 
         tx = startPredicting ? Math.round(raspberrySubsystem.getTX() + TX_PER_SECOND)
         : raspberrySubsystem.getTX();
 
         rotationSpeed = tx > 0 ? 0.4 : -0.4;
-
-        System.out.println(SETPOINT - ERROR_TOLERANCE);
-        System.out.println(SETPOINT + ERROR_TOLERANCE);
 
         if (Util.inRange(tx, SETPOINT - ERROR_TOLERANCE, SETPOINT + ERROR_TOLERANCE)) {
             System.out.println("Ta no setpoint");
@@ -75,41 +73,32 @@ public class AdjustRotationWithVision extends Command {
         }
 
         txLogger.append(tx);
-        safeExitLogger.append(safeExit);
         rotationSpeedLogger.append(rotationSpeed);
         startPredictingLogger.append(startPredicting);
+        excededMaxLoopTimeLogger.append(excededMaxLoopTime);
 
         driveBase.drive(0, -rotationSpeed);
-
-        // if (!timer.hasElapsed(LOOP_TIME)) {
-        //     rotation = 0.45;
-
-        //     System.out.println("Rotation: " + rotation);
-        // } else {
-        //     rotation = 0;
-        // }
-
-        // driveBase.drive(0, rotation);
     }
 
     @Override
     public boolean isFinished() {
-        if (safeExit) {
+        if (excededMaxLoopTime) {
             System.out.println("=-=-=-=-=-=");
-            System.out.println("SAFE EXIT!!");
-            System.out.println("SAFE EXIT!!");
-            System.out.println("SAFE EXIT!!");
-            System.out.println("SAFE EXIT!!");
-            System.out.println("SAFE EXIT!!");
+            System.out.println("TEMPO LIMITE!!");
+            System.out.println("TEMPO LIMITE!!");
+            System.out.println("TEMPO LIMITE!!");
+            System.out.println("TEMPO LIMITE!!");
+            System.out.println("TEMPO LIMITE!!");
             System.out.println("=-=-=-=-=-=");
         }
+
         return !raspberrySubsystem.getTV() ||
-        safeExit;
+        excededMaxLoopTime;
     }
 
     @Override
     public void end(boolean interrupted) {
         timer.stop();
-        driveBase.stopMotor();
+        driveBase.stopRobot();
     }
 }

@@ -226,7 +226,7 @@ public class DriveBaseSubsystem extends SubsystemBase implements DriveBaseSubsys
   }
 
   @Override
-  public void stopMotor() {
+  public void stopRobot() {
     driver.stopMotor();
   }
 
