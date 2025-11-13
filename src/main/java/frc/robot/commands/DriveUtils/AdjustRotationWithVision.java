@@ -21,7 +21,7 @@ public class AdjustRotationWithVision extends Command {
     private final Timer timer;
     
     private final double SETPOINT = 0;
-    private final double LOOP_TIME = 0.53;
+    private final double LOOP_TIME = 1.06;
     // 0.5297117449347027
     
     private final double MAX_LOOP_TIME = 2.0;
@@ -82,16 +82,6 @@ public class AdjustRotationWithVision extends Command {
 
     @Override
     public boolean isFinished() {
-        if (excededMaxLoopTime) {
-            System.out.println("=-=-=-=-=-=");
-            System.out.println("TEMPO LIMITE!!");
-            System.out.println("TEMPO LIMITE!!");
-            System.out.println("TEMPO LIMITE!!");
-            System.out.println("TEMPO LIMITE!!");
-            System.out.println("TEMPO LIMITE!!");
-            System.out.println("=-=-=-=-=-=");
-        }
-
         return !raspberrySubsystem.getTV() ||
         excededMaxLoopTime;
     }
@@ -101,4 +91,5 @@ public class AdjustRotationWithVision extends Command {
         timer.stop();
         driveBase.stopRobot();
     }
+
 }
